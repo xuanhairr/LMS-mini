@@ -1,0 +1,1151 @@
+{
+  "users": [
+    {
+      "createdAt": "2026-01-29T03:47:23.768Z",
+      "email": "admin@gmail.com",
+      "phoneNumber": "0868985346",
+      "fullName": "ROOT_LMS",
+      "id": "697ad84b2958cf4ec0e3051d",
+      "password": "$2b$10$pysnoMCXmqnNDX4Izp6wZ.kX6Ao5Kd4BEKpMmwIh9vLyurgYwlM7i",
+      "roles": [
+        "ADMIN"
+      ],
+      "updatedAt": "2026-05-22T16:39:23.496Z",
+      "username": "admin",
+      "forcePasswordChange": false,
+      "avatar": null,
+      "status": "active",
+      "isEmailVerified": false,
+      "verificationCode": null,
+      "verificationCodeExpiresAt": null,
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "creatorId": null,
+      "updaterId": "697ad84b2958cf4ec0e3051d"
+    },
+    {
+      "createdAt": "2026-05-17T09:59:04.145Z",
+      "email": "kiennd03@gmail.com",
+      "phoneNumber": null,
+      "fullName": "Nguyễn Duy Kiên",
+      "id": "6a0991688f9692a91aebcef8",
+      "password": "$2b$10$vgm4rKXeX1RQRQHVedWm6eK2849EtcTERz9Y6CiOWHssGSdTxtUC.",
+      "roles": [
+        "STUDENT"
+      ],
+      "updatedAt": "2026-05-22T17:32:22.111Z",
+      "username": "kiennd03@gmail.com",
+      "forcePasswordChange": false,
+      "avatar": null,
+      "status": "active",
+      "isEmailVerified": true,
+      "verificationCode": null,
+      "verificationCodeExpiresAt": null,
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "creatorId": "697ad84b2958cf4ec0e3051d",
+      "updaterId": "697ad84b2958cf4ec0e3051d"
+    },
+    {
+      "createdAt": "2026-05-21T12:09:51.158Z",
+      "email": "katoriitto84@gmail.com",
+      "phoneNumber": "0309621444",
+      "fullName": "Lê Quốc Đạt",
+      "id": "6a0ef60f4f5c1c6cf168b02e",
+      "password": "$2b$10$x8YAJOhNcQr453w5H1YRJubX..v6c2V1B4MKxagx2msuFE194MBHu",
+      "roles": [
+        "TEACHER"
+      ],
+      "updatedAt": "2026-05-21T12:25:48.626Z",
+      "username": "katoriitto84@gmail.com",
+      "forcePasswordChange": false,
+      "avatar": null,
+      "status": "active",
+      "isEmailVerified": true,
+      "verificationCode": null,
+      "verificationCodeExpiresAt": null,
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "creatorId": "697ad84b2958cf4ec0e3051d",
+      "updaterId": "6a0ef60f4f5c1c6cf168b02e"
+    },
+    {
+      "createdAt": "2026-05-21T12:10:58.158Z",
+      "email": "trung08042003@gmail.com",
+      "phoneNumber": "0904630831",
+      "fullName": "Nguyễn Linh",
+      "id": "6a0ef6524f5c1c6cf168b02f",
+      "password": "$2b$10$9D7wjoZLTN/vT2ZosYJJNe1rvRwKFBiqhm7tEgtganST4q4i2UA6O",
+      "roles": [
+        "HEAD_STAFF"
+      ],
+      "updatedAt": "2026-05-22T15:28:45.548Z",
+      "username": "trung08042003@gmail.com",
+      "forcePasswordChange": false,
+      "avatar": null,
+      "status": "active",
+      "isEmailVerified": true,
+      "verificationCode": null,
+      "verificationCodeExpiresAt": null,
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "creatorId": "697ad84b2958cf4ec0e3051d",
+      "updaterId": "6a0ef6524f5c1c6cf168b02f"
+    },
+    {
+      "createdAt": "2026-05-22T15:34:25.876Z",
+      "email": "nguyenthilinhh22122003@gmail.com",
+      "phoneNumber": "091203123",
+      "fullName": "Lê Đắc Huy",
+      "id": "6a1077814724c4c8c0c13a3c",
+      "password": "$2b$10$8JDBX0AAtLYFOtOsGYvW7OmvnwosWJ3wTq5..XCw.QR3f0YTIQz8q",
+      "roles": [
+        "STAFF"
+      ],
+      "updatedAt": "2026-05-22T15:35:06.991Z",
+      "username": "nguyenthilinhh22122003@gmail.com",
+      "forcePasswordChange": false,
+      "avatar": null,
+      "status": "active",
+      "isEmailVerified": true,
+      "verificationCode": null,
+      "verificationCodeExpiresAt": null,
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "creatorId": "6a0ef6524f5c1c6cf168b02f",
+      "updaterId": "6a1077814724c4c8c0c13a3c"
+    },
+    {
+      "createdAt": "2026-06-09T02:39:40.575Z",
+      "email": "staff@lms.vn",
+      "phoneNumber": null,
+      "fullName": "Giáo vụ Demo",
+      "id": "6a277cecc9faeb79e7b8ab37",
+      "password": "$2b$10$XCge1kk4sWgkro/PbPWSh.kuNhheYO7ChhQdcmB69UQtOAwpoW3y6",
+      "roles": [
+        "STAFF"
+      ],
+      "updatedAt": "2026-06-09T02:39:40.575Z",
+      "username": "staff_demo",
+      "forcePasswordChange": false,
+      "avatar": null,
+      "status": "active",
+      "isEmailVerified": true,
+      "verificationCode": null,
+      "verificationCodeExpiresAt": null,
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "creatorId": null,
+      "updaterId": null
+    },
+    {
+      "createdAt": "2026-06-09T02:39:40.852Z",
+      "email": "gv@lms.vn",
+      "phoneNumber": null,
+      "fullName": "Giảng viên Demo",
+      "id": "6a277cecc9faeb79e7b8ab38",
+      "password": "$2b$10$XCge1kk4sWgkro/PbPWSh.kuNhheYO7ChhQdcmB69UQtOAwpoW3y6",
+      "roles": [
+        "TEACHER"
+      ],
+      "updatedAt": "2026-06-09T02:39:40.852Z",
+      "username": "teacher_demo",
+      "forcePasswordChange": false,
+      "avatar": null,
+      "status": "active",
+      "isEmailVerified": true,
+      "verificationCode": null,
+      "verificationCodeExpiresAt": null,
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "creatorId": null,
+      "updaterId": null
+    },
+    {
+      "createdAt": "2026-06-09T02:39:40.855Z",
+      "email": "hv1@lms.vn",
+      "phoneNumber": null,
+      "fullName": "Học viên Demo 1",
+      "id": "6a277cecc9faeb79e7b8ab39",
+      "password": "$2b$10$XCge1kk4sWgkro/PbPWSh.kuNhheYO7ChhQdcmB69UQtOAwpoW3y6",
+      "roles": [
+        "STUDENT"
+      ],
+      "updatedAt": "2026-06-09T02:39:40.855Z",
+      "username": "student1_demo",
+      "forcePasswordChange": false,
+      "avatar": null,
+      "status": "active",
+      "isEmailVerified": true,
+      "verificationCode": null,
+      "verificationCodeExpiresAt": null,
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "creatorId": null,
+      "updaterId": null
+    },
+    {
+      "createdAt": "2026-06-09T02:39:40.860Z",
+      "email": "hv2@lms.vn",
+      "phoneNumber": null,
+      "fullName": "Học viên Demo 2",
+      "id": "6a277cecc9faeb79e7b8ab3a",
+      "password": "$2b$10$XCge1kk4sWgkro/PbPWSh.kuNhheYO7ChhQdcmB69UQtOAwpoW3y6",
+      "roles": [
+        "STUDENT"
+      ],
+      "updatedAt": "2026-06-09T02:39:40.860Z",
+      "username": "student2_demo",
+      "forcePasswordChange": false,
+      "avatar": null,
+      "status": "active",
+      "isEmailVerified": true,
+      "verificationCode": null,
+      "verificationCodeExpiresAt": null,
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "creatorId": null,
+      "updaterId": null
+    }
+  ],
+  "courses": [
+    {
+      "createdAt": "2026-05-23T03:02:09.330Z",
+      "description": "Cùng khám phá kiến thức mới và nâng tầm kỹ năng của bạn. Hành trình bắt đầu từ những bước chân đầu tiên.",
+      "endDate": null,
+      "id": "6a1118b1c8ea9bb66d88f79e",
+      "startDate": null,
+      "teacherId": "6a0ef60f4f5c1c6cf168b02e",
+      "creatorId": "697ad84b2958cf4ec0e3051d",
+      "updaterId": "697ad84b2958cf4ec0e3051d",
+      "title": "Nhập môn CSDL - PostgreSQL",
+      "coverImage": "https://res.cloudinary.com/do5mbz6wl/image/upload/v1779505681/qdpa9egjhweac5e3ggul.jpg",
+      "lessonCount": 3,
+      "duration": 2533,
+      "status": "active",
+      "categoryId": "6a114eadc51721fedcd799cc",
+      "updatedAt": "2026-05-30T17:00:22.411Z"
+    },
+    {
+      "createdAt": "2026-06-09T06:19:30.957Z",
+      "description": "Học lập trình web từ A-Z với MERN stack.",
+      "endDate": null,
+      "id": "6a27b0722cc1672ac4201c49",
+      "startDate": null,
+      "teacherId": "6a277cecc9faeb79e7b8ab38",
+      "creatorId": "6a277cecc9faeb79e7b8ab37",
+      "updaterId": "697ad84b2958cf4ec0e3051d",
+      "title": "Fullstack ReactJS & NodeJS",
+      "coverImage": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+      "lessonCount": 5,
+      "duration": 2567,
+      "status": "active",
+      "categoryId": "6a27b0722cc1672ac4201c47",
+      "updatedAt": "2026-06-09T06:29:26.646Z"
+    },
+    {
+      "createdAt": "2026-06-09T06:19:30.971Z",
+      "description": "Khóa học lập trình mobile đa nền tảng với Flutter của Google.",
+      "endDate": null,
+      "id": "6a27b0722cc1672ac4201c4f",
+      "startDate": null,
+      "teacherId": "6a0ef60f4f5c1c6cf168b02e",
+      "creatorId": "6a277cecc9faeb79e7b8ab37",
+      "updaterId": "697ad84b2958cf4ec0e3051d",
+      "title": "Xây dựng App với Flutter",
+      "coverImage": "https://images.unsplash.com/photo-1617042375876-a13e36732a04?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+      "lessonCount": 3,
+      "duration": 1499,
+      "status": "active",
+      "categoryId": "6a27b0722cc1672ac4201c48",
+      "updatedAt": "2026-06-09T06:29:57.976Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "6a114eadc51721fedcd799cc",
+      "name": "Backend",
+      "description": "",
+      "createdAt": "2026-05-23T06:52:29.982Z",
+      "updatedAt": "2026-05-23T06:52:29.982Z"
+    },
+    {
+      "id": "6a114eb7c51721fedcd799cd",
+      "name": "Front-end",
+      "description": "",
+      "createdAt": "2026-05-23T06:52:39.819Z",
+      "updatedAt": "2026-05-23T06:52:39.819Z"
+    },
+    {
+      "id": "6a114ebfc51721fedcd799ce",
+      "name": "DevOps",
+      "description": "",
+      "createdAt": "2026-05-23T06:52:47.762Z",
+      "updatedAt": "2026-05-23T06:52:47.762Z"
+    },
+    {
+      "id": "6a27b0722cc1672ac4201c47",
+      "name": "Lập trình Web",
+      "description": "Các khóa học về frontend và backend",
+      "createdAt": "2026-06-09T06:19:30.934Z",
+      "updatedAt": "2026-06-09T06:19:30.934Z"
+    },
+    {
+      "id": "6a27b0722cc1672ac4201c48",
+      "name": "Lập trình Mobile",
+      "description": "React Native, Flutter, Swift, Kotlin",
+      "createdAt": "2026-06-09T06:19:30.949Z",
+      "updatedAt": "2026-06-09T06:19:30.949Z"
+    }
+  ],
+  "lessons": [
+    {
+      "content": null,
+      "courseId": "6a1118b1c8ea9bb66d88f79e",
+      "createdAt": "2026-05-23T03:18:43.420Z",
+      "id": "6a111c93c8ea9bb66d88f79f",
+      "title": "Tổng quan về CSDL",
+      "typeField": "Video",
+      "updatedAt": "2026-05-30T17:00:22.388Z",
+      "duration": 1424,
+      "status": "published",
+      "order": 0,
+      "sessionNumber": null
+    },
+    {
+      "content": null,
+      "courseId": "6a1118b1c8ea9bb66d88f79e",
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7d9",
+      "title": "Tổng quan về hệ quản trị dữ liệu PostgreSQL",
+      "typeField": "Video",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "duration": 1109,
+      "status": "published",
+      "order": 0,
+      "sessionNumber": null
+    },
+    {
+      "content": null,
+      "courseId": "6a1118b1c8ea9bb66d88f79e",
+      "createdAt": "2026-05-23T04:30:21.531Z",
+      "id": "6a112d5dc8ea9bb66d88f7eb",
+      "title": "Hệ thống kiến thưc bài 1,2",
+      "typeField": "Quiz",
+      "updatedAt": "2026-05-23T04:30:21.531Z",
+      "duration": 0,
+      "status": "published",
+      "order": 0,
+      "sessionNumber": null
+    },
+    {
+      "content": "<p>Làm quen với JSX, State, Props</p>",
+      "courseId": "6a27b0722cc1672ac4201c49",
+      "createdAt": "2026-06-09T06:19:30.957Z",
+      "id": "6a27b0722cc1672ac4201c4a",
+      "title": "Bài 1: Tổng quan ReactJS",
+      "typeField": "Video",
+      "updatedAt": "2026-06-09T06:29:11.310Z",
+      "duration": 507,
+      "status": "published",
+      "order": 1,
+      "sessionNumber": 1
+    },
+    {
+      "content": "<p>Làm quen với useState, useEffect</p>",
+      "courseId": "6a27b0722cc1672ac4201c49",
+      "createdAt": "2026-06-09T06:19:30.957Z",
+      "id": "6a27b0722cc1672ac4201c4b",
+      "title": "Bài 2: React Hooks",
+      "typeField": "Video",
+      "updatedAt": "2026-06-09T06:29:16.166Z",
+      "duration": 567,
+      "status": "published",
+      "order": 2,
+      "sessionNumber": 2
+    },
+    {
+      "content": "<p>Tạo RESTful API cơ bản</p>",
+      "courseId": "6a27b0722cc1672ac4201c49",
+      "createdAt": "2026-06-09T06:19:30.957Z",
+      "id": "6a27b0722cc1672ac4201c4c",
+      "title": "Bài 3: NodeJS Cơ bản",
+      "typeField": "Video",
+      "updatedAt": "2026-06-09T06:29:19.825Z",
+      "duration": 424,
+      "status": "published",
+      "order": 3,
+      "sessionNumber": 3
+    },
+    {
+      "content": "<p>Sử dụng MongoDB và Prisma</p>",
+      "courseId": "6a27b0722cc1672ac4201c49",
+      "createdAt": "2026-06-09T06:19:30.957Z",
+      "id": "6a27b0722cc1672ac4201c4d",
+      "title": "Bài 4: Kết nối Database",
+      "typeField": "Video",
+      "updatedAt": "2026-06-09T06:29:23.240Z",
+      "duration": 645,
+      "status": "published",
+      "order": 4,
+      "sessionNumber": 4
+    },
+    {
+      "content": "<p>Làm project thực tế MERN Stack</p>",
+      "courseId": "6a27b0722cc1672ac4201c49",
+      "createdAt": "2026-06-09T06:19:30.957Z",
+      "id": "6a27b0722cc1672ac4201c4e",
+      "title": "Bài 5: Tổng kết Project",
+      "typeField": "Video",
+      "updatedAt": "2026-06-09T06:29:26.614Z",
+      "duration": 424,
+      "status": "published",
+      "order": 5,
+      "sessionNumber": 5
+    },
+    {
+      "content": "<p>Cài đặt Flutter SDK, Android Studio</p>",
+      "courseId": "6a27b0722cc1672ac4201c4f",
+      "createdAt": "2026-06-09T06:19:30.971Z",
+      "id": "6a27b0722cc1672ac4201c50",
+      "title": "Bài 1: Cài đặt môi trường",
+      "typeField": "Video",
+      "updatedAt": "2026-06-09T06:29:50.723Z",
+      "duration": 464,
+      "status": "published",
+      "order": 1,
+      "sessionNumber": 1
+    },
+    {
+      "content": "<p>Stateless & Stateful Widgets</p>",
+      "courseId": "6a27b0722cc1672ac4201c4f",
+      "createdAt": "2026-06-09T06:19:30.971Z",
+      "id": "6a27b0722cc1672ac4201c51",
+      "title": "Bài 2: Widgets cơ bản",
+      "typeField": "Video",
+      "updatedAt": "2026-06-09T06:29:54.903Z",
+      "duration": 707,
+      "status": "published",
+      "order": 2,
+      "sessionNumber": 2
+    },
+    {
+      "content": "<p>Xuất file APK, IPA đẩy lên store</p>",
+      "courseId": "6a27b0722cc1672ac4201c4f",
+      "createdAt": "2026-06-09T06:19:30.971Z",
+      "id": "6a27b0722cc1672ac4201c52",
+      "title": "Bài 3: Build & Deploy",
+      "typeField": "Video",
+      "updatedAt": "2026-06-09T06:29:57.948Z",
+      "duration": 328,
+      "status": "published",
+      "order": 3,
+      "sessionNumber": 3
+    }
+  ],
+  "videos": [
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7da",
+      "title": "Cài đặt PostgerSQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508634/dtzfyehan3m9wgilcrx6.mp4",
+      "duration": 463,
+      "lessonId": "6a1128a4c8ea9bb66d88f7d9",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7db",
+      "title": "Nhóm lệnh DDL cơ bản",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508637/pfoyjax8yk4c60sxfhpq.mp4",
+      "duration": 242,
+      "lessonId": "6a1128a4c8ea9bb66d88f7d9",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7dc",
+      "title": "Database và Schema",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508643/id9zsl2nkmapmbgp41sm.mp4",
+      "duration": 222,
+      "lessonId": "6a1128a4c8ea9bb66d88f7d9",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7dd",
+      "title": "Các kiểu dữ liệu trong PostgreSQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508640/mkwxevdbqz9v9jb84oms.mp4",
+      "duration": 182,
+      "lessonId": "6a1128a4c8ea9bb66d88f7d9",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.346Z",
+      "id": "6a1b17a6aea11c271ca9f229",
+      "title": "Video 1: Làm quen CSDL & thiết kế CSDL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506090/swrvjdqgkc7tj3najxeu.mp4",
+      "duration": 359,
+      "lessonId": "6a111c93c8ea9bb66d88f79f",
+      "updatedAt": "2026-05-30T17:00:22.346Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.352Z",
+      "id": "6a1b17a6aea11c271ca9f22a",
+      "title": "Video 2: Mô hình quan hệ thực thể",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506498/aj3htsromgxucmrfsvj1.mp4",
+      "duration": 345,
+      "lessonId": "6a111c93c8ea9bb66d88f79f",
+      "updatedAt": "2026-05-30T17:00:22.352Z",
+      "order": 1
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.358Z",
+      "id": "6a1b17a6aea11c271ca9f22b",
+      "title": "Video 3: Hệ quản trị cơ sở dữ liệu PostgeSQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506102/qhobrp4qirvy4xnuspgk.mp4",
+      "duration": 170,
+      "lessonId": "6a111c93c8ea9bb66d88f79f",
+      "updatedAt": "2026-05-30T17:00:22.358Z",
+      "order": 2
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.366Z",
+      "id": "6a1b17a6aea11c271ca9f22c",
+      "title": "Video 4: Ngôn ngữ T-SQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506110/kmvvsetbwddjqhpeg6yj.mp4",
+      "duration": 158,
+      "lessonId": "6a111c93c8ea9bb66d88f79f",
+      "updatedAt": "2026-05-30T17:00:22.366Z",
+      "order": 3
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.374Z",
+      "id": "6a1b17a6aea11c271ca9f22d",
+      "title": "Video 5: Mô hình quan hệ E-R",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506491/vnazihmwvbaurilwaudv.mp4",
+      "duration": 148,
+      "lessonId": "6a111c93c8ea9bb66d88f79f",
+      "updatedAt": "2026-05-30T17:00:22.374Z",
+      "order": 4
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.381Z",
+      "id": "6a1b17a6aea11c271ca9f22e",
+      "title": "Video 6: Sơ đồ quan hệ ERD",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506494/spczavfo3ufodmxqppns.mp4",
+      "duration": 244,
+      "lessonId": "6a111c93c8ea9bb66d88f79f",
+      "updatedAt": "2026-05-30T17:00:22.381Z",
+      "order": 5
+    },
+    {
+      "createdAt": "2026-06-09T06:29:11.291Z",
+      "id": "6a27b2b7ea73faf94bb84445",
+      "title": "Phần 1: Video 1: Làm quen CSDL & thiết kế CSDL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506090/swrvjdqgkc7tj3najxeu.mp4",
+      "duration": 359,
+      "lessonId": "6a27b0722cc1672ac4201c4a",
+      "updatedAt": "2026-06-09T06:29:11.291Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-06-09T06:29:11.302Z",
+      "id": "6a27b2b7ea73faf94bb84446",
+      "title": "Phần 2: Video 5: Mô hình quan hệ E-R",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506491/vnazihmwvbaurilwaudv.mp4",
+      "duration": 148,
+      "lessonId": "6a27b0722cc1672ac4201c4a",
+      "updatedAt": "2026-06-09T06:29:11.302Z",
+      "order": 1
+    },
+    {
+      "createdAt": "2026-06-09T06:29:16.149Z",
+      "id": "6a27b2bcea73faf94bb84447",
+      "title": "Phần 1: Video 2: Mô hình quan hệ thực thể",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506498/aj3htsromgxucmrfsvj1.mp4",
+      "duration": 345,
+      "lessonId": "6a27b0722cc1672ac4201c4b",
+      "updatedAt": "2026-06-09T06:29:16.149Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-06-09T06:29:16.157Z",
+      "id": "6a27b2bcea73faf94bb84448",
+      "title": "Phần 2: Database và Schema",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508643/id9zsl2nkmapmbgp41sm.mp4",
+      "duration": 222,
+      "lessonId": "6a27b0722cc1672ac4201c4b",
+      "updatedAt": "2026-06-09T06:29:16.157Z",
+      "order": 1
+    },
+    {
+      "createdAt": "2026-06-09T06:29:19.808Z",
+      "id": "6a27b2bfea73faf94bb84449",
+      "title": "Phần 1: Nhóm lệnh DDL cơ bản",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508637/pfoyjax8yk4c60sxfhpq.mp4",
+      "duration": 242,
+      "lessonId": "6a27b0722cc1672ac4201c4c",
+      "updatedAt": "2026-06-09T06:29:19.808Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-06-09T06:29:19.815Z",
+      "id": "6a27b2bfea73faf94bb8444a",
+      "title": "Phần 2: Các kiểu dữ liệu trong PostgreSQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508640/mkwxevdbqz9v9jb84oms.mp4",
+      "duration": 182,
+      "lessonId": "6a27b0722cc1672ac4201c4c",
+      "updatedAt": "2026-06-09T06:29:19.815Z",
+      "order": 1
+    },
+    {
+      "createdAt": "2026-06-09T06:29:23.224Z",
+      "id": "6a27b2c3ea73faf94bb8444b",
+      "title": "Phần 1: Các kiểu dữ liệu trong PostgreSQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508640/mkwxevdbqz9v9jb84oms.mp4",
+      "duration": 182,
+      "lessonId": "6a27b0722cc1672ac4201c4d",
+      "updatedAt": "2026-06-09T06:29:23.224Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-06-09T06:29:23.230Z",
+      "id": "6a27b2c3ea73faf94bb8444c",
+      "title": "Phần 2: Cài đặt PostgerSQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508634/dtzfyehan3m9wgilcrx6.mp4",
+      "duration": 463,
+      "lessonId": "6a27b0722cc1672ac4201c4d",
+      "updatedAt": "2026-06-09T06:29:23.230Z",
+      "order": 1
+    },
+    {
+      "createdAt": "2026-06-09T06:29:26.596Z",
+      "id": "6a27b2c6ea73faf94bb8444d",
+      "title": "Phần 1: Các kiểu dữ liệu trong PostgreSQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508640/mkwxevdbqz9v9jb84oms.mp4",
+      "duration": 182,
+      "lessonId": "6a27b0722cc1672ac4201c4e",
+      "updatedAt": "2026-06-09T06:29:26.596Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-06-09T06:29:26.604Z",
+      "id": "6a27b2c6ea73faf94bb8444e",
+      "title": "Phần 2: Nhóm lệnh DDL cơ bản",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508637/pfoyjax8yk4c60sxfhpq.mp4",
+      "duration": 242,
+      "lessonId": "6a27b0722cc1672ac4201c4e",
+      "updatedAt": "2026-06-09T06:29:26.604Z",
+      "order": 1
+    },
+    {
+      "createdAt": "2026-06-09T06:29:50.702Z",
+      "id": "6a27b2deea73faf94bb8444f",
+      "title": "Phần 1: Database và Schema",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508643/id9zsl2nkmapmbgp41sm.mp4",
+      "duration": 222,
+      "lessonId": "6a27b0722cc1672ac4201c50",
+      "updatedAt": "2026-06-09T06:29:50.702Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-06-09T06:29:50.712Z",
+      "id": "6a27b2deea73faf94bb84450",
+      "title": "Phần 2: Nhóm lệnh DDL cơ bản",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508637/pfoyjax8yk4c60sxfhpq.mp4",
+      "duration": 242,
+      "lessonId": "6a27b0722cc1672ac4201c50",
+      "updatedAt": "2026-06-09T06:29:50.712Z",
+      "order": 1
+    },
+    {
+      "createdAt": "2026-06-09T06:29:54.884Z",
+      "id": "6a27b2e2ea73faf94bb84451",
+      "title": "Phần 1: Video 6: Sơ đồ quan hệ ERD",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506494/spczavfo3ufodmxqppns.mp4",
+      "duration": 244,
+      "lessonId": "6a27b0722cc1672ac4201c51",
+      "updatedAt": "2026-06-09T06:29:54.884Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-06-09T06:29:54.893Z",
+      "id": "6a27b2e2ea73faf94bb84452",
+      "title": "Phần 2: Cài đặt PostgerSQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779508634/dtzfyehan3m9wgilcrx6.mp4",
+      "duration": 463,
+      "lessonId": "6a27b0722cc1672ac4201c51",
+      "updatedAt": "2026-06-09T06:29:54.893Z",
+      "order": 1
+    },
+    {
+      "createdAt": "2026-06-09T06:29:57.932Z",
+      "id": "6a27b2e5ea73faf94bb84453",
+      "title": "Phần 1: Video 4: Ngôn ngữ T-SQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506110/kmvvsetbwddjqhpeg6yj.mp4",
+      "duration": 158,
+      "lessonId": "6a27b0722cc1672ac4201c52",
+      "updatedAt": "2026-06-09T06:29:57.932Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-06-09T06:29:57.940Z",
+      "id": "6a27b2e5ea73faf94bb84454",
+      "title": "Phần 2: Video 3: Hệ quản trị cơ sở dữ liệu PostgeSQL",
+      "url": "https://res.cloudinary.com/do5mbz6wl/video/upload/v1779506102/qhobrp4qirvy4xnuspgk.mp4",
+      "duration": 170,
+      "lessonId": "6a27b0722cc1672ac4201c52",
+      "updatedAt": "2026-06-09T06:29:57.940Z",
+      "order": 1
+    }
+  ],
+  "quizzes": [
+    {
+      "createdAt": "2026-05-23T03:24:43.444Z",
+      "id": "6a111dfbc8ea9bb66d88f7a9",
+      "title": "Tổng quan về CSDL Quiz",
+      "lessonId": "6a111c93c8ea9bb66d88f79f",
+      "updatedAt": "2026-05-30T17:00:22.264Z"
+    },
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7de",
+      "title": "Tổng quan về hệ quản trị dữ liệu PostgreSQL Quiz",
+      "lessonId": "6a1128a4c8ea9bb66d88f7d9",
+      "updatedAt": "2026-05-23T04:10:12.413Z"
+    },
+    {
+      "createdAt": "2026-05-23T04:30:21.531Z",
+      "id": "6a112d5dc8ea9bb66d88f7ec",
+      "title": "Hệ thống kiến thưc bài 1,2 Quiz",
+      "lessonId": "6a112d5dc8ea9bb66d88f7eb",
+      "updatedAt": "2026-05-23T04:30:21.531Z"
+    }
+  ],
+  "questions": [
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7df",
+      "content": "Việc quy định Kiểu Dữ Liệu cho các cột mang lại 3 lợi ích chính. Đâu KHÔNG phải là một trong 3 lợi ích đó",
+      "options": [
+        "Chống \"rác\" Ngăn chặn dữ liệu sai, ví dụ: nhét chữ \"Tám rưỡi\" vào cột điểm số",
+        "Tiết kiệm chỗ (Dùng hộp nhỏ cho Tuoi thay vì thùng container).",
+        "Giúp CSDL chạy nhanh hơn (Vì kho hàng gọn gàng).",
+        "Giúp tự động tạo Khóa Ngoại (Foreign Key) cho CSDL."
+      ],
+      "correctAnswer": 3,
+      "quizId": "6a1128a4c8ea9bb66d88f7de",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7e0",
+      "content": "Khi bạn cần lưu content (nội dung) của một bài post blog, một đoạn văn bản có thể rất dài, bạn nên dùng \"nhãn dán\" (kiểu dữ liệu)",
+      "options": [
+        "VARCHAR(255) (Có thể không đủ, 255 ký tự là quá ngắn cho một bài blog).",
+        "INTEGER (Sai kiểu, đây là kiểu số).",
+        "TEXT (Văn bản \"vô tư đi\", dùng cho nội dung dài không giới hạn).",
+        "DATE (Sai kiểu, đây là kiểu ngày tháng)."
+      ],
+      "correctAnswer": 0,
+      "quizId": "6a1128a4c8ea9bb66d88f7de",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7e1",
+      "content": "Để lưu trữ dữ liệu liên quan đến Tiền ? (ví dụ: giasanpham, luongnhanvien) đòi hỏi sự chính xác tuyệt đối, bạn PHẢI dùng kiểu dữ liệu nào? (20 điểm)",
+      "options": [
+        "INTEGER (Không lưu được số lẻ, ví dụ: 99.000 VNĐ).",
+        "NUMERIC(p, s) (Dùng cho số thập phân chính xác tuyệt đối).",
+        "BOOLEAN (Sai kiểu, đây là kiểu Đúng/Sai).",
+        "TIMESTAMP (Sai kiểu, đây là kiểu ngày giờ)."
+      ],
+      "correctAnswer": 1,
+      "quizId": "6a1128a4c8ea9bb66d88f7de",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7e2",
+      "content": "Kiểu dữ liệu \"công tắc đèn\" ✅❌ BOOLEAN thường được dùng để lưu loại thông tin nào?",
+      "options": [
+        "Thông tin có nhiều lựa chọn (ví dụ: \"Đỏ\", \"Xanh\", \"Vàng\").",
+        "Thông tin chỉ có 2 trạng thái (Đúng/Sai), ví dụ: is_admin (có phải sếp không?).",
+        "Thông tin ngày tháng (ví dụ: NgaySinh).",
+        "Thông tin ID tự tăng (ví dụ: 1, 2, 3...)."
+      ],
+      "correctAnswer": 0,
+      "quizId": "6a1128a4c8ea9bb66d88f7de",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:10:12.413Z",
+      "id": "6a1128a4c8ea9bb66d88f7e3",
+      "content": "Để tạo cột id làm Khóa Chính và muốn nó tự động \"cấp số\" (1, 2, 3...) mỗi khi có dữ liệu mới, bạn nên dùng kiểu \"nhãn dán\" đặc biệt nào? (20 điểm)",
+      "options": [
+        "BIGINT (Đây là số nguyên lớn, nhưng nó không tự động cấp số).",
+        "BIGSERIAL (\"Máy cấp số tự động\" ?, tương đương BIGINT + tự tăng).",
+        "JSONB (Sai kiểu, đây là kiểu JSON).",
+        "TIMESTAMP (Sai kiểu, đây là kiểu ngày giờ)."
+      ],
+      "correctAnswer": 0,
+      "quizId": "6a1128a4c8ea9bb66d88f7de",
+      "updatedAt": "2026-05-23T04:10:12.413Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:30:21.531Z",
+      "id": "6a112d5dc8ea9bb66d88f7ed",
+      "content": "pgAdmin 4 có vai trò chính là gì?",
+      "options": [
+        "Là cái để trực tiếp lưu trữ dữ liệu.",
+        "Là một công cụ có giao diện (GUI) để ta \"nhìn\" và \"ra lệnh\" cho DB",
+        "Là mật khẩu \"chìa khóa vạn năng\" ?",
+        "Là cổng \"quốc dân\" 5432."
+      ],
+      "correctAnswer": 1,
+      "quizId": "6a112d5dc8ea9bb66d88f7ec",
+      "updatedAt": "2026-05-23T04:30:21.531Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:30:21.531Z",
+      "id": "6a112d5dc8ea9bb66d88f7ee",
+      "content": "PostgreSQL Server sau khi cài xong, nó hoạt động như thế nào? ",
+      "options": [
+        "Nó hiện lên một icon phần mềm (như Word, Excel) để ta bấm vào mở lên.",
+        "Nó là một \"dịch vụ\" (service) chạy ngầm 24/7, không có giao diện đồ họa.",
+        "Nó chỉ chạy khi nào ta mở pgAdmin 4 lên.",
+        "Nó chạy trực tiếp trên trình duyệt web của bạn."
+      ],
+      "correctAnswer": 1,
+      "quizId": "6a112d5dc8ea9bb66d88f7ec",
+      "updatedAt": "2026-05-23T04:30:21.531Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:30:21.531Z",
+      "id": "6a112d5dc8ea9bb66d88f7ef",
+      "content": "Trong các bước cài đặt, bước nào được thầy nhấn mạnh là QUAN TRỌNG NHẤT?",
+      "options": [
+        "Chọn thư mục cài đặt (Installation Directory).",
+        "Chọn cổng \"kho hàng\" (Port).",
+        "Đặt mật khẩu (password) cho \"superuser\" (tài khoản postgres)",
+        "Bỏ tick mục Stack Builder."
+      ],
+      "correctAnswer": 2,
+      "quizId": "6a112d5dc8ea9bb66d88f7ec",
+      "updatedAt": "2026-05-23T04:30:21.531Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:30:21.531Z",
+      "id": "6a112d5dc8ea9bb66d88f7f0",
+      "content": "Cổng (Port) \"quốc dân\" mặc định mà PostgreSQL Server \"lắng nghe\" là số mấy?",
+      "options": [
+        "3306",
+        "8080",
+        "5432",
+        "123456"
+      ],
+      "correctAnswer": 2,
+      "quizId": "6a112d5dc8ea9bb66d88f7ec",
+      "updatedAt": "2026-05-23T04:30:21.531Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-23T04:30:21.531Z",
+      "id": "6a112d5dc8ea9bb66d88f7f1",
+      "content": "Để \"khánh thành\" (kiểm tra) xem cài đặt đã thành công chưa, chúng ta làm gì?",
+      "options": [
+        "Khởi động lại máy tính và chờ xem có thông báo lỗi không.",
+        "Kiểm tra xem thư mục C:\\Program Files\\PostgreSQL đã được tạo ra chưa.",
+        "Mở phần mềm pgAdmin 4 và thử kết nối (login) bằng chính mật khẩu \"thần chú\" ? đã tạo.",
+        "Gõ postgresql -v trong Command Line."
+      ],
+      "correctAnswer": 2,
+      "quizId": "6a112d5dc8ea9bb66d88f7ec",
+      "updatedAt": "2026-05-23T04:30:21.531Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.291Z",
+      "id": "6a1b17a6aea11c271ca9f222",
+      "content": "Đâu là đặc điểm cốt lõi của một Hệ quản trị cơ sở dữ liệu quan hệ (RDBMS)?",
+      "options": [
+        "Dữ liệu được lưu trữ trong các file văn bản (text files).",
+        "Dữ liệu được tổ chức thành các bảng (tables) có hàng và cột.",
+        "Mọi dữ liệu đều được mã hóa.",
+        "Chỉ có thể truy vấn dữ liệu bằng ngôn ngữ lập trình Python."
+      ],
+      "correctAnswer": 1,
+      "quizId": "6a111dfbc8ea9bb66d88f7a9",
+      "updatedAt": "2026-05-30T17:00:22.291Z",
+      "order": 0
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.300Z",
+      "id": "6a1b17a6aea11c271ca9f223",
+      "content": "Thuộc tính nào trong ACID đảm bảo rằng một khi giao dịch được xác nhận thành công, dữ liệu sẽ không bị mất ngay cả khi hệ thống gặp sự cố?",
+      "options": [
+        "Atomicity(Tính nguyên tử)",
+        "Consistency(Tính nhất quán)",
+        "Isolation(Tính cô lập)",
+        "Durability(Tính bền vững)"
+      ],
+      "correctAnswer": 3,
+      "quizId": "6a111dfbc8ea9bb66d88f7a9",
+      "updatedAt": "2026-05-30T17:00:22.300Z",
+      "order": 1
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.307Z",
+      "id": "6a1b17a6aea11c271ca9f224",
+      "content": "Hệ quản trị cơ sở dữ liệu nào sau đây nổi tiếng là một thư viện nhỏ gọn, không cần máy chủ, rất phù hợp cho các ứng dụng di động?",
+      "options": [
+        "SQL server",
+        "Oracal",
+        "SQL Lite",
+        "PostgreSQL"
+      ],
+      "correctAnswer": 2,
+      "quizId": "6a111dfbc8ea9bb66d88f7a9",
+      "updatedAt": "2026-05-30T17:00:22.307Z",
+      "order": 2
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.311Z",
+      "id": "6a1b17a6aea11c271ca9f225",
+      "content": "Ngôn ngữ nào được sử dụng phổ biến nhất để tương tác với cơ sở dữ liệu quan hệ?",
+      "options": [
+        "Java",
+        "Python",
+        "SQL",
+        "C++"
+      ],
+      "correctAnswer": 0,
+      "quizId": "6a111dfbc8ea9bb66d88f7a9",
+      "updatedAt": "2026-05-30T17:00:22.311Z",
+      "order": 3
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.319Z",
+      "id": "6a1b17a6aea11c271ca9f226",
+      "content": "Một giao dịch hoặc là thành công hoàn toàn, hoặc là thất bại hoàn toàn, không có trạng thái lưng chừng\". Đây là mô tả của thuộc tính nào trong ACID?",
+      "options": [
+        "Atomicity(Tính nguyên tử)",
+        "Consistency(Tính nhất quán)",
+        "Isolation(Tính cô lập)",
+        "Durability(Tính bền vững)"
+      ],
+      "correctAnswer": 1,
+      "quizId": "6a111dfbc8ea9bb66d88f7a9",
+      "updatedAt": "2026-05-30T17:00:22.319Z",
+      "order": 4
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.325Z",
+      "id": "6a1b17a6aea11c271ca9f227",
+      "content": "1 + 1 bằng bao nhiêu?",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "correctAnswer": 1,
+      "quizId": "6a111dfbc8ea9bb66d88f7a9",
+      "updatedAt": "2026-05-30T17:00:22.325Z",
+      "order": 5
+    },
+    {
+      "createdAt": "2026-05-30T17:00:22.332Z",
+      "id": "6a1b17a6aea11c271ca9f228",
+      "content": "Thủ đô của Việt Nam là gì?",
+      "options": [
+        "Hà Nội",
+        "Hồ Chí Minh",
+        "Đà Nẵng",
+        "Cần Thơ",
+        "Cà Mâu"
+      ],
+      "correctAnswer": 0,
+      "quizId": "6a111dfbc8ea9bb66d88f7a9",
+      "updatedAt": "2026-05-30T17:00:22.332Z",
+      "order": 6
+    }
+  ],
+  "homeworks": [
+    {
+      "id": "6a1120f9c8ea9bb66d88f7d7",
+      "lessonId": "6a111c93c8ea9bb66d88f79f",
+      "title": " Hệ thống Quản lý Đăng ký Môn học Đại học",
+      "description": "<p class=\"ql-align-center\"><strong style=\"background-color: transparent;\">[Bài tập] Hệ thống Quản lý Đăng ký Môn học Đại học</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">1. Mục tiêu</strong></h2><ul><li><span style=\"background-color: transparent;\">Nhận biết và xác định các&nbsp;</span><strong style=\"background-color: transparent;\">thực thể, thuộc tính, mối quan hệ</strong><span style=\"background-color: transparent;\"> trong hệ thống giáo dục</span></li><li><span style=\"background-color: transparent;\">Vẽ được&nbsp;</span><strong style=\"background-color: transparent;\">sơ đồ ERD</strong><span style=\"background-color: transparent;\"> thể hiện rõ ràng các mối quan hệ&nbsp;</span><strong style=\"background-color: transparent;\">1–n</strong><span style=\"background-color: transparent;\">,&nbsp;</span><strong style=\"background-color: transparent;\">n–n</strong></li><li><span style=\"background-color: transparent;\">Chuẩn hóa sơ đồ ở mức cơ bản</span></li></ul><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">2. Mô tả</strong></h2><p><span style=\"background-color: transparent;\">Một trường đại học cần quản lý việc&nbsp;</span><strong style=\"background-color: transparent;\">đăng ký môn học của sinh viên</strong><span style=\"background-color: transparent;\">. Hệ thống lưu trữ thông tin như sau:</span></p><ul><li><strong style=\"background-color: transparent;\">Sinh viên (Student)</strong><span style=\"background-color: transparent;\">: mã sinh viên, họ tên, ngày sinh, giới tính, email, khoa</span></li><li><strong style=\"background-color: transparent;\">Môn học (Course)</strong><span style=\"background-color: transparent;\">: mã môn, tên môn, số tín chỉ, khoa phụ trách</span></li><li><strong style=\"background-color: transparent;\">Giảng viên (Instructor)</strong><span style=\"background-color: transparent;\">: mã giảng viên, họ tên, học vị, email, khoa</span></li><li><strong style=\"background-color: transparent;\">Lớp học phần (Class_Section)</strong><span style=\"background-color: transparent;\">: mã lớp học phần, học kỳ, năm học, phòng học</span></li><li><strong style=\"background-color: transparent;\">Đăng ký (Enrollment)</strong><span style=\"background-color: transparent;\">: ghi lại việc sinh viên đăng ký lớp học phần cụ thể</span></li></ul><p>&nbsp;</p><p><strong style=\"background-color: transparent;\">Yêu cầu:</strong></p><ol><li><span style=\"background-color: transparent;\">Xác định các&nbsp;</span><strong style=\"background-color: transparent;\">thực thể</strong><span style=\"background-color: transparent;\"> và&nbsp;</span><strong style=\"background-color: transparent;\">thuộc tính chính</strong></li><li><span style=\"background-color: transparent;\">Xác định&nbsp;</span><strong style=\"background-color: transparent;\">mối quan hệ</strong><span style=\"background-color: transparent;\"> giữa các thực thể, ví dụ:</span></li><li class=\"ql-indent-1\">Giảng viên&nbsp;<strong style=\"background-color: transparent;\">dạy</strong><span style=\"background-color: transparent;\"> lớp học phần nào</span></li><li class=\"ql-indent-1\"><span style=\"background-color: transparent;\">Lớp học phần&nbsp;</span><strong style=\"background-color: transparent;\">thuộc về</strong><span style=\"background-color: transparent;\"> môn học nào</span></li><li class=\"ql-indent-1\"><span style=\"background-color: transparent;\">Sinh viên&nbsp;</span><strong style=\"background-color: transparent;\">đăng ký</strong><span style=\"background-color: transparent;\"> lớp học phần nào</span></li><li><span style=\"background-color: transparent;\">Vẽ&nbsp;</span><strong style=\"background-color: transparent;\">sơ đồ ERD</strong><span style=\"background-color: transparent;\"> mô tả đầy đủ các mối quan hệ và&nbsp;</span><strong style=\"background-color: transparent;\">ràng buộc (1–n, n–n)</strong></li><li><span style=\"background-color: transparent;\">Chỉ rõ&nbsp;</span><strong style=\"background-color: transparent;\">khóa chính</strong><span style=\"background-color: transparent;\">,&nbsp;</span><strong style=\"background-color: transparent;\">khóa ngoại</strong><span style=\"background-color: transparent;\">, và&nbsp;</span><strong style=\"background-color: transparent;\">thuộc tính đa trị</strong><span style=\"background-color: transparent;\"> (nếu có)</span></li></ol><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">3. Đánh giá</strong></h2><p><span style=\"background-color: transparent;\">Để hoàn thành bài thực hành, học viên cần:</span></p><ul><li><span style=\"background-color: transparent;\">Đưa mã nguồn lên GitHub.</span></li><li><span style=\"background-color: transparent;\">Dán link của repository lên phần nộp bài trên hệ thống.</span></li></ul><p><br></p>",
+      "level": "Cơ bản",
+      "order": 0,
+      "createdAt": "2026-05-23T03:37:29.031Z",
+      "updatedAt": "2026-05-23T03:37:29.031Z"
+    },
+    {
+      "id": "6a1120f9c8ea9bb66d88f7d8",
+      "lessonId": "6a111c93c8ea9bb66d88f79f",
+      "title": "Hệ thống quản lý đơn hàng Thương mại điện tử",
+      "description": "<p><br></p><p class=\"ql-align-center\"><strong style=\"background-color: transparent;\">[Bài tập] Hệ thống quản lý đơn hàng Thương mại điện tử</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">1. Mục tiêu</strong></h2><ul><li><span style=\"background-color: transparent;\">Vận dụng mô hình&nbsp;</span><strong style=\"background-color: transparent;\">thực thể – quan hệ (ER)</strong><span style=\"background-color: transparent;\"> để mô tả nghiệp vụ mua bán online</span></li><li><span style=\"background-color: transparent;\">Phân biệt rõ&nbsp;</span><strong style=\"background-color: transparent;\">mối quan hệ 1–n</strong><span style=\"background-color: transparent;\"> và&nbsp;</span><strong style=\"background-color: transparent;\">n–n</strong><span style=\"background-color: transparent;\"> trong tình huống thực tế</span></li><li><span style=\"background-color: transparent;\">Chuẩn hóa sơ đồ để tránh dư thừa dữ liệu</span></li></ul><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">2. Mô tả</strong></h2><p><span style=\"background-color: transparent;\">Một trang web bán hàng trực tuyến cần quản lý thông tin về:</span></p><ul><li><strong style=\"background-color: transparent;\">Khách hàng (Customer)</strong><span style=\"background-color: transparent;\">: mã khách hàng, họ tên, email, số điện thoại, địa chỉ</span></li><li><strong style=\"background-color: transparent;\">Sản phẩm (Product)</strong><span style=\"background-color: transparent;\">: mã sản phẩm, tên sản phẩm, giá, mô tả, loại hàng</span></li><li><strong style=\"background-color: transparent;\">Đơn hàng (Order)</strong><span style=\"background-color: transparent;\">: mã đơn, ngày đặt hàng, tổng tiền, trạng thái</span></li><li><strong style=\"background-color: transparent;\">Chi tiết đơn hàng (OrderDetail)</strong><span style=\"background-color: transparent;\">: số lượng, đơn giá tại thời điểm mua</span></li><li><strong style=\"background-color: transparent;\">Nhân viên (Staff)</strong><span style=\"background-color: transparent;\">: mã nhân viên, họ tên, vị trí, ngày vào làm</span></li></ul><p>&nbsp;</p><p><strong style=\"background-color: transparent;\">Yêu cầu:</strong></p><ol><li><span style=\"background-color: transparent;\">Xác định các&nbsp;</span><strong style=\"background-color: transparent;\">thực thể</strong><span style=\"background-color: transparent;\"> và&nbsp;</span><strong style=\"background-color: transparent;\">thuộc tính</strong><span style=\"background-color: transparent;\"> chính</span></li><li><span style=\"background-color: transparent;\">Xác định&nbsp;</span><strong style=\"background-color: transparent;\">mối quan hệ</strong><span style=\"background-color: transparent;\"> giữa các thực thể, ví dụ:</span></li><li class=\"ql-indent-1\">Khách hàng&nbsp;<strong style=\"background-color: transparent;\">đặt</strong><span style=\"background-color: transparent;\"> nhiều đơn hàng</span></li><li class=\"ql-indent-1\"><span style=\"background-color: transparent;\">Một đơn hàng&nbsp;</span><strong style=\"background-color: transparent;\">chứa</strong><span style=\"background-color: transparent;\"> nhiều sản phẩm</span></li><li class=\"ql-indent-1\"><span style=\"background-color: transparent;\">Nhân viên&nbsp;</span><strong style=\"background-color: transparent;\">xử lý</strong><span style=\"background-color: transparent;\"> đơn hàng</span></li><li><span style=\"background-color: transparent;\">Vẽ&nbsp;</span><strong style=\"background-color: transparent;\">sơ đồ ERD</strong><span style=\"background-color: transparent;\"> thể hiện các thực thể, mối quan hệ, và&nbsp;</span><strong style=\"background-color: transparent;\">ràng buộc (1–n, n–n)</strong></li><li><span style=\"background-color: transparent;\">Ghi chú&nbsp;</span><strong style=\"background-color: transparent;\">khóa chính (PK)</strong><span style=\"background-color: transparent;\">,&nbsp;</span><strong style=\"background-color: transparent;\">khóa ngoại (FK)</strong><span style=\"background-color: transparent;\"> rõ ràng trong sơ đồ</span></li></ol><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">3. Đánh giá</strong></h2><p><span style=\"background-color: transparent;\">Để hoàn thành bài thực hành, học viên cần:</span></p><ul><li><span style=\"background-color: transparent;\">Đưa mã nguồn lên GitHub.</span></li><li><span style=\"background-color: transparent;\">Dán link của repository lên phần nộp bài trên hệ thống.</span></li></ul><p><br></p>",
+      "level": "Khá",
+      "order": 0,
+      "createdAt": "2026-05-23T03:37:29.042Z",
+      "updatedAt": "2026-05-23T03:37:29.042Z"
+    },
+    {
+      "id": "6a1128a4c8ea9bb66d88f7e4",
+      "lessonId": "6a1128a4c8ea9bb66d88f7d9",
+      "title": "Hệ thống Quản lý Đăng ký Môn học Đại học",
+      "description": "<p class=\"ql-align-center\"><strong style=\"background-color: transparent;\">[Bài tập] Hệ thống Quản lý Đăng ký Môn học Đại học</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">1. Mục tiêu</strong></h2><ul><li><span style=\"background-color: transparent;\">Nhận biết và xác định các&nbsp;</span><strong style=\"background-color: transparent;\">thực thể, thuộc tính, mối quan hệ</strong><span style=\"background-color: transparent;\"> trong hệ thống giáo dục</span></li><li><span style=\"background-color: transparent;\">Vẽ được&nbsp;</span><strong style=\"background-color: transparent;\">sơ đồ ERD</strong><span style=\"background-color: transparent;\"> thể hiện rõ ràng các mối quan hệ&nbsp;</span><strong style=\"background-color: transparent;\">1–n</strong><span style=\"background-color: transparent;\">,&nbsp;</span><strong style=\"background-color: transparent;\">n–n</strong></li><li><span style=\"background-color: transparent;\">Chuẩn hóa sơ đồ ở mức cơ bản</span></li></ul><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">2. Mô tả</strong></h2><p><span style=\"background-color: transparent;\">Một trường đại học cần quản lý việc&nbsp;</span><strong style=\"background-color: transparent;\">đăng ký môn học của sinh viên</strong><span style=\"background-color: transparent;\">. Hệ thống lưu trữ thông tin như sau:</span></p><ul><li><strong style=\"background-color: transparent;\">Sinh viên (Student)</strong><span style=\"background-color: transparent;\">: mã sinh viên, họ tên, ngày sinh, giới tính, email, khoa</span></li><li><strong style=\"background-color: transparent;\">Môn học (Course)</strong><span style=\"background-color: transparent;\">: mã môn, tên môn, số tín chỉ, khoa phụ trách</span></li><li><strong style=\"background-color: transparent;\">Giảng viên (Instructor)</strong><span style=\"background-color: transparent;\">: mã giảng viên, họ tên, học vị, email, khoa</span></li><li><strong style=\"background-color: transparent;\">Lớp học phần (Class_Section)</strong><span style=\"background-color: transparent;\">: mã lớp học phần, học kỳ, năm học, phòng học</span></li><li><strong style=\"background-color: transparent;\">Đăng ký (Enrollment)</strong><span style=\"background-color: transparent;\">: ghi lại việc sinh viên đăng ký lớp học phần cụ thể</span></li></ul><p>&nbsp;</p><p><strong style=\"background-color: transparent;\">Yêu cầu:</strong></p><ol><li><span style=\"background-color: transparent;\">Xác định các&nbsp;</span><strong style=\"background-color: transparent;\">thực thể</strong><span style=\"background-color: transparent;\"> và&nbsp;</span><strong style=\"background-color: transparent;\">thuộc tính chính</strong></li><li><span style=\"background-color: transparent;\">Xác định&nbsp;</span><strong style=\"background-color: transparent;\">mối quan hệ</strong><span style=\"background-color: transparent;\"> giữa các thực thể, ví dụ:</span></li><li class=\"ql-indent-1\">Giảng viên&nbsp;<strong style=\"background-color: transparent;\">dạy</strong><span style=\"background-color: transparent;\"> lớp học phần nào</span></li><li class=\"ql-indent-1\"><span style=\"background-color: transparent;\">Lớp học phần&nbsp;</span><strong style=\"background-color: transparent;\">thuộc về</strong><span style=\"background-color: transparent;\"> môn học nào</span></li><li class=\"ql-indent-1\"><span style=\"background-color: transparent;\">Sinh viên&nbsp;</span><strong style=\"background-color: transparent;\">đăng ký</strong><span style=\"background-color: transparent;\"> lớp học phần nào</span></li><li><span style=\"background-color: transparent;\">Vẽ&nbsp;</span><strong style=\"background-color: transparent;\">sơ đồ ERD</strong><span style=\"background-color: transparent;\"> mô tả đầy đủ các mối quan hệ và&nbsp;</span><strong style=\"background-color: transparent;\">ràng buộc (1–n, n–n)</strong></li><li><span style=\"background-color: transparent;\">Chỉ rõ&nbsp;</span><strong style=\"background-color: transparent;\">khóa chính</strong><span style=\"background-color: transparent;\">,&nbsp;</span><strong style=\"background-color: transparent;\">khóa ngoại</strong><span style=\"background-color: transparent;\">, và&nbsp;</span><strong style=\"background-color: transparent;\">thuộc tính đa trị</strong><span style=\"background-color: transparent;\"> (nếu có)</span></li></ol><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">3. Đánh giá</strong></h2><p><span style=\"background-color: transparent;\">Để hoàn thành bài thực hành, học viên cần:</span></p><ul><li><span style=\"background-color: transparent;\">Đưa mã nguồn lên GitHub.</span></li><li><span style=\"background-color: transparent;\">Dán link của repository lên phần nộp bài trên hệ thống.</span></li></ul><p><br></p>",
+      "level": "Cơ bản",
+      "order": 0,
+      "createdAt": "2026-05-23T04:10:12.510Z",
+      "updatedAt": "2026-05-23T04:10:12.510Z"
+    },
+    {
+      "id": "6a1128a4c8ea9bb66d88f7e5",
+      "lessonId": "6a1128a4c8ea9bb66d88f7d9",
+      "title": "Hệ thống quản lý đơn hàng Thương mại điện tử",
+      "description": "<p class=\"ql-align-center\"><strong style=\"background-color: transparent;\">[Bài tập] Hệ thống quản lý đơn hàng Thương mại điện tử</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">1. Mục tiêu</strong></h2><ul><li><span style=\"background-color: transparent;\">Vận dụng mô hình&nbsp;</span><strong style=\"background-color: transparent;\">thực thể – quan hệ (ER)</strong><span style=\"background-color: transparent;\"> để mô tả nghiệp vụ mua bán online</span></li><li><span style=\"background-color: transparent;\">Phân biệt rõ&nbsp;</span><strong style=\"background-color: transparent;\">mối quan hệ 1–n</strong><span style=\"background-color: transparent;\"> và&nbsp;</span><strong style=\"background-color: transparent;\">n–n</strong><span style=\"background-color: transparent;\"> trong tình huống thực tế</span></li><li><span style=\"background-color: transparent;\">Chuẩn hóa sơ đồ để tránh dư thừa dữ liệu</span></li></ul><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">2. Mô tả</strong></h2><p><span style=\"background-color: transparent;\">Một trang web bán hàng trực tuyến cần quản lý thông tin về:</span></p><ul><li><strong style=\"background-color: transparent;\">Khách hàng (Customer)</strong><span style=\"background-color: transparent;\">: mã khách hàng, họ tên, email, số điện thoại, địa chỉ</span></li><li><strong style=\"background-color: transparent;\">Sản phẩm (Product)</strong><span style=\"background-color: transparent;\">: mã sản phẩm, tên sản phẩm, giá, mô tả, loại hàng</span></li><li><strong style=\"background-color: transparent;\">Đơn hàng (Order)</strong><span style=\"background-color: transparent;\">: mã đơn, ngày đặt hàng, tổng tiền, trạng thái</span></li><li><strong style=\"background-color: transparent;\">Chi tiết đơn hàng (OrderDetail)</strong><span style=\"background-color: transparent;\">: số lượng, đơn giá tại thời điểm mua</span></li><li><strong style=\"background-color: transparent;\">Nhân viên (Staff)</strong><span style=\"background-color: transparent;\">: mã nhân viên, họ tên, vị trí, ngày vào làm</span></li></ul><p>&nbsp;</p><p><strong style=\"background-color: transparent;\">Yêu cầu:</strong></p><ol><li><span style=\"background-color: transparent;\">Xác định các&nbsp;</span><strong style=\"background-color: transparent;\">thực thể</strong><span style=\"background-color: transparent;\"> và&nbsp;</span><strong style=\"background-color: transparent;\">thuộc tính</strong><span style=\"background-color: transparent;\"> chính</span></li><li><span style=\"background-color: transparent;\">Xác định&nbsp;</span><strong style=\"background-color: transparent;\">mối quan hệ</strong><span style=\"background-color: transparent;\"> giữa các thực thể, ví dụ:</span></li><li class=\"ql-indent-1\">Khách hàng&nbsp;<strong style=\"background-color: transparent;\">đặt</strong><span style=\"background-color: transparent;\"> nhiều đơn hàng</span></li><li class=\"ql-indent-1\"><span style=\"background-color: transparent;\">Một đơn hàng&nbsp;</span><strong style=\"background-color: transparent;\">chứa</strong><span style=\"background-color: transparent;\"> nhiều sản phẩm</span></li><li class=\"ql-indent-1\"><span style=\"background-color: transparent;\">Nhân viên&nbsp;</span><strong style=\"background-color: transparent;\">xử lý</strong><span style=\"background-color: transparent;\"> đơn hàng</span></li><li><span style=\"background-color: transparent;\">Vẽ&nbsp;</span><strong style=\"background-color: transparent;\">sơ đồ ERD</strong><span style=\"background-color: transparent;\"> thể hiện các thực thể, mối quan hệ, và&nbsp;</span><strong style=\"background-color: transparent;\">ràng buộc (1–n, n–n)</strong></li><li><span style=\"background-color: transparent;\">Ghi chú&nbsp;</span><strong style=\"background-color: transparent;\">khóa chính (PK)</strong><span style=\"background-color: transparent;\">,&nbsp;</span><strong style=\"background-color: transparent;\">khóa ngoại (FK)</strong><span style=\"background-color: transparent;\"> rõ ràng trong sơ đồ</span></li></ol><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">3. Đánh giá</strong></h2><p><span style=\"background-color: transparent;\">Để hoàn thành bài thực hành, học viên cần:</span></p><ul><li><span style=\"background-color: transparent;\">Đưa mã nguồn lên GitHub.</span></li><li><span style=\"background-color: transparent;\">Dán link của repository lên phần nộp bài trên hệ thống.</span></li></ul><p><br></p>",
+      "level": "Cơ bản",
+      "order": 0,
+      "createdAt": "2026-05-23T04:10:12.526Z",
+      "updatedAt": "2026-05-23T04:10:12.526Z"
+    },
+    {
+      "id": "6a112d5dc8ea9bb66d88f7f2",
+      "lessonId": "6a112d5dc8ea9bb66d88f7eb",
+      "title": "Xác định thực thể và thuộc tính",
+      "description": "<p class=\"ql-align-center\"><strong style=\"background-color: transparent;\">[Bài tập] Xác định thực thể và thuộc tính</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">1. Mục tiêu</strong></h2><ul><li><span style=\"background-color: transparent;\">Ôn lại kiến thức về&nbsp;</span><em style=\"background-color: transparent;\">mô hình thực thể (Entity)</em><span style=\"background-color: transparent;\"> và&nbsp;</span><em style=\"background-color: transparent;\">thuộc tính (Attribute)</em></li></ul><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">2. Mô tả</strong></h2><h2><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">Một hệ thống quản lý thư viện cần lưu trữ thông tin về:</span></h2><ul><li><span style=\"background-color: transparent;\">Sách (bao gồm tên sách, mã ISBN, tác giả, năm xuất bản, thể loại)</span></li><li><span style=\"background-color: transparent;\">Độc giả (bao gồm mã độc giả, họ tên, ngày sinh, địa chỉ, số điện thoại)</span></li><li><span style=\"background-color: transparent;\">Phiếu mượn sách (gồm mã phiếu, ngày mượn, ngày trả dự kiến, trạng thái)</span></li></ul><p>&nbsp;</p><p><strong style=\"background-color: transparent;\"><em><u>Yêu cầu:</u></em></strong></p><ol><li><span style=\"background-color: transparent;\">Xác định&nbsp;</span><strong style=\"background-color: transparent;\">các thực thể chính</strong><span style=\"background-color: transparent;\"> trong hệ thống</span></li><li><span style=\"background-color: transparent;\">Liệt kê&nbsp;</span><strong style=\"background-color: transparent;\">thuộc tính</strong><span style=\"background-color: transparent;\"> của từng thực thể</span></li><li><span style=\"background-color: transparent;\">Phân loại thuộc tính nào là&nbsp;</span><strong style=\"background-color: transparent;\">khóa chính (Primary Key)</strong><span style=\"background-color: transparent;\"> và thuộc tính nào là&nbsp;</span><strong style=\"background-color: transparent;\">khóa ngoại (Foreign Key)</strong><span style=\"background-color: transparent;\"> nếu có</span></li><li><span style=\"background-color: transparent;\">Vẽ sơ đồ ERD và các quan hệ giữa các thực thể</span></li></ol><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">3. Đánh giá</strong></h2><p><span style=\"background-color: transparent;\">Để hoàn thành bài thực hành, học viên cần:</span></p><ul><li><span style=\"background-color: transparent;\">Đưa mã nguồn lên GitHub.</span></li><li><span style=\"background-color: transparent;\">Dán link của repository lên phần nộp bài trên hệ thống.</span></li></ul><p><br></p>",
+      "level": "Cơ bản",
+      "order": 0,
+      "createdAt": "2026-05-23T04:30:21.606Z",
+      "updatedAt": "2026-05-23T04:30:21.606Z"
+    },
+    {
+      "id": "6a112d5dc8ea9bb66d88f7f3",
+      "lessonId": "6a112d5dc8ea9bb66d88f7eb",
+      "title": "Nhận diện và mô tả các mối quan hệ giữa thực thể",
+      "description": "<p class=\"ql-align-center\"><strong style=\"background-color: transparent;\">[Bài tập] Nhận diện và mô tả các mối quan hệ giữa thực thể</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">1. Mục tiêu</strong></h2><ul><li><span style=\"background-color: transparent;\">Hiểu về&nbsp;</span><strong style=\"background-color: transparent;\">mối quan hệ (Relationship)</strong><span style=\"background-color: transparent;\"> và&nbsp;</span><strong style=\"background-color: transparent;\">bội số (Cardinality)</strong><span style=\"background-color: transparent;\"> giữa các thực thể</span></li></ul><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">2. Mô tả</strong></h2><h2><span style=\"color: rgb(0, 0, 0); background-color: transparent;\">Trong hệ thống quản lý sinh viên của một trường đại học, ta có các nhóm dữ liệu sau:</span></h2><ul><li><span style=\"background-color: transparent;\">Sinh viên</span></li><li><span style=\"background-color: transparent;\">Môn học</span></li><li><span style=\"background-color: transparent;\">Giảng viên</span></li><li><span style=\"background-color: transparent;\">Lớp học phần</span></li></ul><p>&nbsp;</p><p><strong style=\"background-color: transparent;\"><em><u>Yêu cầu:</u></em></strong></p><ol><li><span style=\"background-color: transparent;\">Xác định&nbsp;</span><strong style=\"background-color: transparent;\">các mối quan hệ</strong><span style=\"background-color: transparent;\"> giữa các thực thể trên (VD: Sinh viên - Lớp học phần, Giảng viên - Môn học, …)</span></li><li><span style=\"background-color: transparent;\">Mỗi mối quan hệ, hãy mô tả&nbsp;</span><strong style=\"background-color: transparent;\">kiểu liên kết</strong><span style=\"background-color: transparent;\"> (1-1, 1-N, N-N)</span></li><li><span style=\"background-color: transparent;\">Mô tả ngắn gọn&nbsp;</span><strong style=\"background-color: transparent;\">ý nghĩa thực tế</strong><span style=\"background-color: transparent;\"> của từng mối quan hệ</span></li><li><span style=\"background-color: transparent;\">Vẽ sơ đồ ERD và các quan hệ giữa các thực thể</span></li></ol><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 0, 0); background-color: transparent;\">3. Đánh giá</strong></h2><p><span style=\"background-color: transparent;\">Để hoàn thành bài thực hành, học viên cần:</span></p><ul><li><span style=\"background-color: transparent;\">Đưa mã nguồn lên GitHub.</span></li><li><span style=\"background-color: transparent;\">Dán link của repository lên phần nộp bài trên hệ thống.</span></li></ul><p><br></p>",
+      "level": "Cơ bản",
+      "order": 0,
+      "createdAt": "2026-05-23T04:30:21.623Z",
+      "updatedAt": "2026-05-23T04:30:21.623Z"
+    },
+    {
+      "id": "6a27b0722cc1672ac4201c53",
+      "lessonId": "6a27b0722cc1672ac4201c4b",
+      "title": "Bài tập 2: Xây dựng Todo List bằng Hooks",
+      "description": "<p>Sử dụng useState để thêm, sửa, xóa các công việc.</p>",
+      "level": "Khá",
+      "order": 1,
+      "createdAt": "2026-06-09T06:19:30.980Z",
+      "updatedAt": "2026-06-09T06:19:30.980Z"
+    },
+    {
+      "id": "6a27b0732cc1672ac4201c54",
+      "lessonId": "6a27b0722cc1672ac4201c4e",
+      "title": "Đồ án Cuối khóa: E-commerce Website",
+      "description": "<p>Nộp link Github của đồ án thương mại điện tử.</p>",
+      "level": "Giỏi",
+      "order": 1,
+      "createdAt": "2026-06-09T06:19:31.007Z",
+      "updatedAt": "2026-06-09T06:19:31.007Z"
+    }
+  ],
+  "classes": [
+    {
+      "id": "6a1129e9c8ea9bb66d88f7e6",
+      "title": "CSDL-C624-230526",
+      "courseId": "6a1118b1c8ea9bb66d88f79e",
+      "teacherId": "6a0ef60f4f5c1c6cf168b02e",
+      "managerId": "6a1077814724c4c8c0c13a3c",
+      "startDate": "2026-05-22T17:00:00.000Z",
+      "endDate": "2026-06-08T17:00:00.000Z",
+      "sessionCount": 3,
+      "status": "finished",
+      "createdAt": "2026-05-23T04:15:37.434Z",
+      "updatedAt": "2026-06-08T07:15:28.805Z"
+    },
+    {
+      "id": "6a27b0732cc1672ac4201c57",
+      "title": "REACT-01 - Web Fullstack K1",
+      "courseId": "6a27b0722cc1672ac4201c49",
+      "teacherId": "6a277cecc9faeb79e7b8ab38",
+      "managerId": "6a277cecc9faeb79e7b8ab37",
+      "startDate": "2026-06-01T00:00:00.000Z",
+      "endDate": "2026-08-01T00:00:00.000Z",
+      "sessionCount": 5,
+      "status": "active",
+      "createdAt": "2026-06-09T06:19:31.052Z",
+      "updatedAt": "2026-06-09T06:26:04.834Z"
+    },
+    {
+      "id": "6a27b0732cc1672ac4201c59",
+      "title": "FLUTTER-01 - Mobile Đa nền tảng K1",
+      "courseId": "6a27b0722cc1672ac4201c4f",
+      "teacherId": "6a277cecc9faeb79e7b8ab38",
+      "managerId": "6a277cecc9faeb79e7b8ab37",
+      "startDate": "2026-07-01T00:00:00.000Z",
+      "endDate": "2026-09-01T00:00:00.000Z",
+      "sessionCount": 3,
+      "status": "ready",
+      "createdAt": "2026-06-09T06:19:31.059Z",
+      "updatedAt": "2026-06-09T06:25:48.203Z"
+    }
+  ],
+  "enrollments": [
+    {
+      "courseId": "6a1118b1c8ea9bb66d88f79e",
+      "classId": "6a1129e9c8ea9bb66d88f7e6",
+      "createdAt": "2026-05-23T04:15:41.016Z",
+      "id": "6a1129edc8ea9bb66d88f7e8",
+      "studentId": "6a0991688f9692a91aebcef8",
+      "updatedAt": "2026-05-23T04:15:41.016Z",
+      "status": "active"
+    },
+    {
+      "courseId": "6a27b0722cc1672ac4201c49",
+      "classId": "6a27b0732cc1672ac4201c57",
+      "createdAt": "2026-06-09T06:19:31.068Z",
+      "id": "6a27b0732cc1672ac4201c5b",
+      "studentId": "6a277cecc9faeb79e7b8ab39",
+      "updatedAt": "2026-06-09T06:19:31.068Z",
+      "status": "active"
+    },
+    {
+      "courseId": "6a27b0722cc1672ac4201c49",
+      "classId": "6a27b0732cc1672ac4201c57",
+      "createdAt": "2026-06-09T06:19:31.068Z",
+      "id": "6a27b0732cc1672ac4201c5c",
+      "studentId": "6a277cecc9faeb79e7b8ab3a",
+      "updatedAt": "2026-06-09T06:19:31.068Z",
+      "status": "active"
+    },
+    {
+      "courseId": "6a27b0722cc1672ac4201c4f",
+      "classId": "6a27b0732cc1672ac4201c59",
+      "createdAt": "2026-06-09T06:19:31.068Z",
+      "id": "6a27b0732cc1672ac4201c5d",
+      "studentId": "6a277cecc9faeb79e7b8ab39",
+      "updatedAt": "2026-06-09T06:19:31.068Z",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,389 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Category {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  courses     Course[]
+}
+
+model User {
+  createdAt          DateTime     @default(now())
+  email              String?      @unique
+  phoneNumber        String?
+  enrollments        Enrollment[]
+  fullName           String?
+  id                 String       @id @default(auto()) @map("_id") @db.ObjectId
+  password           String
+  progresses         Progress[]
+  roles              String[]
+  teachingCourses    Course[]
+  teachingClasses    Class[]     @relation("TeacherRelation")
+  managedClasses     Class[]     @relation("ManagerRelation")
+  createdCourses     Course[]    @relation("CourseCreator")
+  updatedAt          DateTime    @updatedAt
+  username           String       @unique
+  forcePasswordChange Boolean      @default(true)
+  avatar             String?
+  status             String       @default("active")
+  isEmailVerified    Boolean      @default(false)
+  verificationCode   String?
+  verificationCodeExpiresAt DateTime?
+  creatorId          String?      @db.ObjectId
+  creator            User?        @relation("UserCreator", fields: [creatorId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  createdUsers       User[]       @relation("UserCreator")
+  updaterId          String?      @db.ObjectId
+  updater            User?        @relation("UserUpdater", fields: [updaterId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  updatedUsers       User[]       @relation("UserUpdater")
+  updatedCourses     Course[]     @relation("CourseUpdater")
+  quizAttempts       QuizAttempt[]
+  assignmentSubmissions AssignmentSubmission[]
+  notifications      Notification[]
+  attendances        Attendance[]
+  examScores         ExamScore[]
+  classResults       ClassResult[]
+}
+
+model Course {
+  createdAt   DateTime     @default(now())
+  description String?
+  endDate     DateTime?
+  enrollments Enrollment[]
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  lessons     Lesson[]
+  classes     Class[]
+  startDate   DateTime?
+  teacher     User?        @relation(fields: [teacherId], references: [id])
+  teacherId   String?      @db.ObjectId
+  creator     User?        @relation("CourseCreator", fields: [creatorId], references: [id])
+  creatorId   String?      @db.ObjectId
+  updater     User?        @relation("CourseUpdater", fields: [updaterId], references: [id])
+  updaterId   String?      @db.ObjectId
+  title       String?
+  coverImage  String?
+  lessonCount Int?
+  duration    Float?
+  status      String?      @default("draft") // draft, active, archived
+  category    Category?    @relation(fields: [categoryId], references: [id])
+  categoryId  String?      @db.ObjectId
+  updatedAt   DateTime     @updatedAt
+  gradeConfig GradeConfig?
+}
+
+model Lesson {
+  content    String?
+  course     Course?    @relation(fields: [courseId], references: [id])
+  courseId   String?    @db.ObjectId
+  createdAt  DateTime   @default(now())
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  progresses Progress[]
+  title      String?
+  typeField  String?
+  updatedAt  DateTime   @updatedAt
+  duration   Float?
+  quizzes    Quiz[]
+  videos     Video[]
+  attachments Attachment[]
+  status     String?    @default("draft") // draft, published, archived
+  order      Int        @default(0)
+  sessionNumber Int?
+  
+  // Homework configuration at Lesson level
+  homeworks     Homework[]
+  
+}
+
+model Video {
+  createdAt DateTime @default(now())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String?
+  url       String
+  duration  Float?
+  lesson    Lesson?  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId  String?  @db.ObjectId
+  updatedAt DateTime @updatedAt
+  order     Int      @default(0)
+}
+
+model Quiz {
+  createdAt DateTime   @default(now())
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  title     String?
+  lesson    Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId  String     @db.ObjectId
+  questions Question[]
+  quizAttempts QuizAttempt[]
+  updatedAt DateTime   @updatedAt
+}
+
+model Question {
+  createdAt     DateTime @default(now())
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  content       String?
+  options       Json?    // Array of strings
+  correctAnswer Int?
+  quiz          Quiz?    @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId        String?  @db.ObjectId
+  updatedAt     DateTime @updatedAt
+  order         Int      @default(0)
+}
+
+model Enrollment {
+  course    Course?  @relation(fields: [courseId], references: [id])
+  courseId  String?  @db.ObjectId
+  class     Class?   @relation(fields: [classId], references: [id])
+  classId   String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  student   User?    @relation(fields: [studentId], references: [id])
+  studentId String?  @db.ObjectId
+  updatedAt DateTime @updatedAt
+  status    String   @default("active") // active, suspended, completed
+
+  @@unique([studentId, classId])
+}
+
+model Class {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String?
+  course      Course?      @relation(fields: [courseId], references: [id])
+  courseId    String?      @db.ObjectId
+  teacher     User?        @relation("TeacherRelation", fields: [teacherId], references: [id])
+  teacherId   String?      @db.ObjectId
+  manager     User?        @relation("ManagerRelation", fields: [managerId], references: [id])
+  managerId     String?      @db.ObjectId
+  enrollments   Enrollment[]
+  attendances   Attendance[]
+  startDate   DateTime?
+  endDate     DateTime?
+  sessionCount  Int?
+  status        String?      @default("active") // active, finished, cancelled
+  schedule      ClassSchedule?
+  assignmentSubmissions AssignmentSubmission[]
+  examScores    ExamScore[]
+  classResults  ClassResult[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Progress {
+  completed        Boolean?
+  completedAt      DateTime?
+  firstCompletedAt DateTime?  // Lần đầu hoàn thành - dùng để tính muộn/đúng hạn
+  completionStatus String     @default("PENDING") // PENDING | COMPLETED | LATE | MISSING
+  // Video watch tracking
+  videoWatchedSeconds Float?  @default(0)  // Số giây đã xem được (maxWatched)
+  videoDuration       Float?  @default(0)  // Tổng thời lượng video (s)
+  completedItems   String[]   @default([]) // Danh sách ID các item (video/doc) đã hoàn thành
+  createdAt        DateTime   @default(now())
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  lesson           Lesson?    @relation(fields: [lessonId], references: [id])
+  lessonId         String?    @db.ObjectId
+  student          User?      @relation(fields: [studentId], references: [id])
+  studentId        String?    @db.ObjectId
+  updatedAt        DateTime   @updatedAt
+}
+
+model QuizAttempt {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  student     User     @relation(fields: [studentId], references: [id])
+  studentId   String   @db.ObjectId
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId      String   @db.ObjectId
+  score       Float    // Điểm số đạt được (VD: 8.5)
+  totalCorrect Int     // Số câu trả lời đúng
+  passed      Boolean  // Có qua bài không (dựa trên mức điểm chuẩn)
+  answers     Json?    // (Tùy chọn) Lưu lại mảng các đáp án SV đã chọn để xem lại
+  createdAt   DateTime @default(now())
+}
+
+// Lịch học hàng tuần của lớp
+// dayOfWeek: 2=Thứ 2, 3=Thứ 3, 4=Thứ 4, 5=Thứ 5, 6=Thứ 6, 7=Thứ 7, 8=Chủ nhật
+model ClassSchedule {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  class       Class    @relation(fields: [classId], references: [id])
+  classId     String   @unique @db.ObjectId
+  dayOfWeek   Int[]    // Ví dụ: [2, 4] = Thứ 2 và Thứ 4
+  shift       String?  // Ca học: "CA1", "CA2", ..., "CA6"
+  startTime   String?  // Giờ bắt đầu: "06:30"
+  endTime     String?  // Giờ kết thúc: "08:30"
+  note        String?  // Ghi chú thêm: "Học bù thứ 7 mỗi tháng"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Bảng cấu hình Ca học (Shift)
+model Shift {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  code      String   @unique // Ví dụ: "CA1" - dùng để tương thích với dữ liệu cũ
+  name      String   // Tên ca học, ví dụ: "Ca 1"
+  startTime String   // Giờ bắt đầu, ví dụ: "06:30"
+  endTime   String   // Giờ kết thúc, ví dụ: "08:30"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Role {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  value     String   @unique
+  label     String
+  color     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Tài liệu đính kèm của Bài học (PDF, slide, code...)
+model Attachment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  lesson    Lesson   @relation(fields: [lessonId], references: [id])
+  lessonId  String   @db.ObjectId
+  title     String
+  fileUrl   String
+  fileType  String?  // pdf | slide | code | other
+  fileName  String?
+  fileSize  Int?
+  category  String?  // slide | code | diagram | other
+  publicId  String?  // Cloudinary public_id for deletion
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Homework thuộc về 1 Lesson
+model Homework {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId    String   @db.ObjectId
+  title       String
+  description String?
+  level       String?  // Vd: Khá, Giỏi, Xuất sắc
+  order       Int?     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  submissions AssignmentSubmission[]
+}
+
+// Học sinh nộp bài tập qua Github
+model AssignmentSubmission {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  homework    Homework @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
+  homeworkId  String   @db.ObjectId
+  
+  class       Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classId     String   @db.ObjectId
+  
+  student     User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId   String   @db.ObjectId
+  
+  githubLink  String   // Bắt buộc nộp qua Github
+  fileUrl     String?  // Có thể giữ lại nếu sau này cần
+  
+  score       Float?   // Điểm giảng viên chấm (0-10)
+  status      String   @default("SUBMITTED") // SUBMITTED | GRADED | RETURNED
+  isLate      Boolean  @default(false)
+  submittedAt DateTime @default(now())
+  note        String?
+  teacherFeedback String?  // Nhận xét/lý do của giáo viên
+  reviewedAt  DateTime?    // Thời điểm giáo viên chấm/trả bài
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Thông báo cho người dùng
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @db.ObjectId
+  title     String
+  message   String
+  type      String   @default("info") // info | success | warning | error
+  link      String?  // Đường dẫn điều hướng khi click
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Attendance {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  classId       String   @db.ObjectId
+  studentId     String   @db.ObjectId
+  sessionNumber Int
+  date          DateTime
+  status        String   // present, absent, late, excused
+  note          String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  class         Class    @relation(fields: [classId], references: [id])
+  student       User     @relation(fields: [studentId], references: [id])
+
+  @@unique([classId, studentId, sessionNumber])
+}
+
+// Cấu hình công thức tính điểm theo từng Khóa học
+model GradeConfig {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  course           Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId         String   @unique @db.ObjectId
+  // Tỉ trọng điểm (tổng phải = 100)
+  attendanceWeight Float    @default(10)  // % Chuyên cần
+  homeworkWeight   Float    @default(30)  // % Bài tập
+  quizWeight       Float    @default(20)  // % Trắc nghiệm/Quiz
+  examWeight       Float    @default(40)  // % Thi cuối khóa
+  // Điểm tối thiểu để Đạt
+  passingScore     Float    @default(5.0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+// Điểm thi cuối khóa do giảng viên/giáo vụ nhập tay hoặc import
+model ExamScore {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classId   String   @db.ObjectId
+  student   User     @relation(fields: [studentId], references: [id])
+  studentId String   @db.ObjectId
+  score     Float    // Điểm thi (0-10)
+  note      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([classId, studentId])
+}
+
+// Điểm tổng kết của học viên trong một lớp học
+model ClassResult {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  class             Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classId           String   @db.ObjectId
+  student           User     @relation(fields: [studentId], references: [id])
+  studentId         String   @db.ObjectId
+  // Điểm thành phần
+  attendanceScore   Float?   // Điểm chuyên cần (đã quy đổi ra thang 10)
+  homeworkScore     Float?   // Điểm trung bình bài tập
+  quizScore         Float?   // Điểm trung bình quiz
+  examScore         Float?   // Điểm thi cuối khóa
+  // Điểm tổng kết (có trọng số)
+  totalScore        Float?
+  isPassed          Boolean?
+  isEligibleForExam Boolean?
+  // Trạng thái: draft (chưa công bố), published (đã công bố cho học viên xem)
+  status            String   @default("draft")
+  calculatedAt      DateTime?
+  publishedAt       DateTime?
+  note              String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([classId, studentId])
+}
