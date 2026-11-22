@@ -224,6 +224,26 @@ export class LessonController extends LessonControllerBase {
       args.orderBy = { [sortBy]: sortOrder || 'asc' };
     }
 
-    return this.prisma.lesson.findMany(args);
+    const lessons = await this.prisma.lesson.findMany(args);
+
+    const user = request.user;
+    const roles: string[] = user?.roles || [];
+    const isStudent = roles.includes("STUDENT") && !roles.includes("ADMIN") && !roles.includes("HEAD_STAFF") && !roles.includes("STAFF") && !roles.includes("TEACHER");
+
+    if (isStudent && Array.isArray(lessons)) {
+      lessons.forEach((lesson: any) => {
+        if (Array.isArray(lesson.quizzes)) {
+          lesson.quizzes.forEach((quiz: any) => {
+            if (Array.isArray(quiz.questions)) {
+              quiz.questions.forEach((q: any) => {
+                delete q.correctAnswer;
+              });
+            }
+          });
+        }
+      });
+    }
+
+    return lessons;
   }
 }

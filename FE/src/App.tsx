@@ -4,11 +4,12 @@ import ForcePasswordChangeModal from "./components/auth/ForcePasswordChangeModal
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, App as AntdApp } from 'antd';
 import viVN from 'antd/locale/vi_VN';
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { SystemProvider } from "@/contexts/SystemContext";
 import { SocketProvider } from "@/contexts/SocketContext";
+import { ErrorBoundary } from "./components/common/ErrorBoundary";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -25,6 +26,7 @@ import AdminClasses from "./pages/admin/ManageClasses";
 import AdminClassDetail from "./pages/admin/ClassDetail";
 import AdminShifts from "./pages/admin/ManageShifts";
 import AdminCategories from "./pages/admin/ManageCategories";
+import AdminDepartments from "./pages/admin/Departments";
 
 import MyCourses from "./pages/student/MyCourses";
 import Assignments from "./pages/student/Assignments";
@@ -32,6 +34,7 @@ import MyGradesPage from "./pages/student/MyGrades";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import TeacherSchedule from "./pages/teacher/TeacherSchedule";
+import CodePlaygroundPage from "./pages/CodePlaygroundPage";
 
 
 const queryClient = new QueryClient();
@@ -125,6 +128,16 @@ const AppRoutes = () => {
             element={
               <ProtectedRoute>
                 {user?.role === 'ADMIN' ? <AdminCategories /> : <Navigate to="/dashboard" replace />}
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Quản lý Khoa & Bộ môn */}
+          <Route
+            path="/admin/departments"
+            element={
+              <ProtectedRoute>
+                {user?.role === 'ADMIN' || user?.role === 'HEAD_STAFF' ? <AdminDepartments /> : <Navigate to="/dashboard" replace />}
               </ProtectedRoute>
             }
           />
@@ -265,6 +278,14 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/code-playground"
+          element={
+            <ProtectedRoute>
+              <CodePlaygroundPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -281,20 +302,24 @@ const AppRoutes = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ConfigProvider theme={antTheme} locale={viVN}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <SystemProvider>
-            <AuthProvider>
-              <SocketProvider>
-                <AppRoutes />
-              </SocketProvider>
-            </AuthProvider>
-          </SystemProvider>
-        </BrowserRouter>
-      </TooltipProvider>
+    <ConfigProvider theme={antTheme} locale={viVN} warning={{ strict: false }}>
+      <AntdApp>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <SystemProvider>
+              <AuthProvider>
+                <SocketProvider>
+                  <ErrorBoundary>
+                    <AppRoutes />
+                  </ErrorBoundary>
+                </SocketProvider>
+              </AuthProvider>
+            </SystemProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AntdApp>
     </ConfigProvider>
   </QueryClientProvider>
 );

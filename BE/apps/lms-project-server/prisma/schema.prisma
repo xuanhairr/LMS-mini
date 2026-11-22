@@ -51,6 +51,9 @@ model User {
   attendances        Attendance[]
   examScores         ExamScore[]
   classResults       ClassResult[]
+  departmentId       String?      @db.ObjectId
+  department         Department?  @relation("DepartmentTeachers", fields: [departmentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  headedDepartments  Department[] @relation("DepartmentHead")
 }
 
 model Course {
@@ -75,8 +78,23 @@ model Course {
   status      String?      @default("draft") // draft, active, archived
   category    Category?    @relation(fields: [categoryId], references: [id])
   categoryId  String?      @db.ObjectId
+  department  Department?  @relation(fields: [departmentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  departmentId String?     @db.ObjectId
   updatedAt   DateTime     @updatedAt
   gradeConfig GradeConfig?
+}
+
+model Department {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  code        String   @unique
+  name        String
+  description String?
+  headId      String?  @db.ObjectId
+  head        User?    @relation("DepartmentHead", fields: [headId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  teachers    User[]   @relation("DepartmentTeachers")
+  courses     Course[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Lesson {

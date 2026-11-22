@@ -15,6 +15,8 @@ import {
   TagsOutlined,
   CalendarOutlined,
   TrophyOutlined,
+  CodeOutlined,
+  ApartmentOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -55,6 +57,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         { key: '/student/attendance', icon: <CalendarOutlined />, label: 'Điểm danh' },
         { key: '/student/assignments', icon: <BookOutlined />, label: 'Bài tập' },
         { key: '/student/grades', icon: <TrophyOutlined />, label: 'Bảng điểm' },
+        { key: '/code-playground', icon: <CodeOutlined />, label: 'Thực hành Code' },
         { key: '/profile', icon: <UserOutlined />, label: 'Hồ sơ cá nhân' },
       ];
     }
@@ -65,6 +68,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         { key: '/manage-courses', icon: <BookOutlined />, label: 'Quản lý khóa học' },
         { key: '/teacher/classes', icon: <ReadOutlined />, label: 'Quản lý Lớp học' },
         { key: '/teacher/schedule', icon: <CalendarOutlined />, label: 'Lịch giảng dạy' },
+        { key: '/code-playground', icon: <CodeOutlined />, label: 'Thực hành Code' },
         { key: '/profile', icon: <UserOutlined />, label: 'Hồ sơ cá nhân' },
       ];
     }
@@ -96,9 +100,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
       if (user?.role === 'ADMIN' || user?.role === 'HEAD_STAFF') {
         items.push(...(user?.role === 'ADMIN' ? [
+          { key: '/admin/departments', icon: <ApartmentOutlined />, label: 'Quản lý Bộ môn' },
           { key: '/admin/shifts', icon: <ReadOutlined />, label: 'Quản lý Ca học' },
           { key: '/admin/categories', icon: <TagsOutlined />, label: 'Quản lý Danh mục' }
-        ] : []));
+        ] : [
+          { key: '/admin/departments', icon: <ApartmentOutlined />, label: 'Quản lý Bộ môn' }
+        ]));
       }
 
       return items;

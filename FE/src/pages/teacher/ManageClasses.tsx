@@ -12,6 +12,8 @@ import {
     ReloadOutlined,
     BookOutlined,
     CalendarOutlined,
+    InfoCircleOutlined,
+    UserAddOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -19,6 +21,8 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSystemConstants, getStatusConfig } from '@/contexts/SystemContext';
+import { StudentDetailModal } from '@/components/student/StudentDetailModal';
+import { QuickAttendanceDrawer } from '@/components/attendance/QuickAttendanceDrawer';
 
 const { RangePicker } = DatePicker;
 const { Text } = Typography;
@@ -59,6 +63,10 @@ const TeacherManageClasses: React.FC = () => {
     const [enrollmentLoading, setEnrollmentLoading] = useState(false);
     const [allStudents, setAllStudents] = useState<any[]>([]);
     const [studentSearchLoading, setStudentSearchLoading] = useState(false);
+    const [selectedStudentIdsToEnroll, setSelectedStudentIdsToEnroll] = useState<string[]>([]);
+    const [isEnrollingBulk, setIsEnrollingBulk] = useState(false);
+    const [studentDetailOpen, setStudentDetailOpen] = useState(false);
+    const [viewingStudent, setViewingStudent] = useState<any>(null);
 
     // Quick Attendance states
     const [attendanceModalVisible, setAttendanceModalVisible] = useState(false);
@@ -305,22 +313,38 @@ const TeacherManageClasses: React.FC = () => {
         }, 500);
     };
 
+    const handleEnrollBulk = async () => {
+        if (!selectedClassForStudents || selectedStudentIdsToEnroll.length === 0) return;
+        setIsEnrollingBulk(true);
+        try {
+            const res = await apiFetch<any>(`/classes/${selectedClassForStudents.id}/enroll-bulk`, {
+                method: 'POST',
+                body: JSON.stringify({ userIds: selectedStudentIdsToEnroll })
+            });
+            const count = res.data?.count ?? selectedStudentIdsToEnroll.length;
+            message.success(`Thêm thành công ${count} học viên vào lớp!`);
+            setSelectedStudentIdsToEnroll([]);
+            fetchClassEnrollments(selectedClassForStudents.id);
+            fetchData();
+        } catch (error: any) {
+            message.error(error.message || 'Lỗi ghi danh');
+        } finally {
+            setIsEnrollingBulk(false);
+        }
+    };
+
     const handleEnrollStudent = async (studentId: string) => {
         if (!selectedClassForStudents) return;
         try {
-            const res = await apiFetch<any>('/enrollments', {
+            const res = await apiFetch<any>(`/classes/${selectedClassForStudents.id}/enroll-bulk`, {
                 method: 'POST',
-                body: JSON.stringify({
-                    student: { id: studentId },
-                    class: { id: selectedClassForStudents.id },
-                    course: { id: selectedClassForStudents.courseId }
-                })
+                body: JSON.stringify({ userIds: [studentId] })
             });
-            message.success(res.message || 'Thêm học viên thành công!');
+            message.success('Thêm học viên thành công!');
             fetchClassEnrollments(selectedClassForStudents.id);
             fetchData(); // Update count in main table
-        } catch (error) {
-            message.error(error.message);
+        } catch (error: any) {
+            message.error(error.message || 'Lỗi ghi danh');
         }
     };
 
@@ -562,34 +586,70 @@ const TeacherManageClasses: React.FC = () => {
                 >
                     <div className="space-y-4 py-4">
                         {canEditEnrollments && (
-                            <div className="flex gap-2">
-                                <Select
-                                    showSearch
-                                    placeholder="Tìm kiếm học viên (tên/email)..."
-                                    style={{ flex: 1 }}
-                                    onSearch={(val) => handleSearchDebounced(val, 'student')}
-                                    onChange={handleEnrollStudent}
-                                    loading={studentSearchLoading}
-                                    filterOption={false}
-                                    value={null}
-                                    suffixIcon={<SearchOutlined />}
-                                    notFoundContent={studentSearchLoading ? <Spin size="small" /> : 'Không tìm thấy học viên'}
-                                >
-                                    {allStudents.map(s => {
-                                        const titleText = s.fullName || s.username;
-                                        return (
-                                            <Select.Option key={s.id} value={s.id}>
-                                                <Space>
-                                                    <Avatar size="small" icon={<UserOutlined />} />
-                                                    {titleText}
-                                                    {s.email && titleText !== s.email && (
-                                                        <span className="text-muted-foreground text-xs ml-1">({s.email})</span>
-                                                    )}
-                                                </Space>
-                                            </Select.Option>
-                                        );
-                                    })}
-                                </Select>
+                            <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <Text strong className="text-xs text-slate-700">Thêm học viên vào lớp:</Text>
+                                    {allStudents.length > 0 && (
+                                        <Button
+                                            size="small"
+                                            type="dashed"
+                                            onClick={() => {
+                                                const enrolledIds = new Set(classEnrollments.map((e: any) => e.student?.id));
+                                                const notEnrolled = allStudents.filter(s => !enrolledIds.has(s.id));
+                                                setSelectedStudentIdsToEnroll(notEnrolled.map(s => s.id));
+                                            }}
+                                        >
+                                            Chọn tất cả chưa vào lớp
+                                        </Button>
+                                    )}
+                                </div>
+                                <div className="flex gap-2">
+                                    <Select
+                                        mode="multiple"
+                                        showSearch
+                                        placeholder="Tìm kiếm và chọn nhiều học viên..."
+                                        style={{ flex: 1 }}
+                                        onSearch={(val) => handleSearchDebounced(val, 'student')}
+                                        onChange={(vals) => setSelectedStudentIdsToEnroll(vals)}
+                                        value={selectedStudentIdsToEnroll}
+                                        loading={studentSearchLoading}
+                                        filterOption={false}
+                                        suffixIcon={<SearchOutlined />}
+                                        notFoundContent={studentSearchLoading ? <Spin size="small" /> : 'Không tìm thấy học viên'}
+                                        maxTagCount="responsive"
+                                    >
+                                        {(() => {
+                                            const enrolledIds = new Set(classEnrollments.map((e: any) => e.student?.id));
+                                            return allStudents.map(s => {
+                                                const isEnrolled = enrolledIds.has(s.id);
+                                                const titleText = s.fullName || s.username;
+                                                return (
+                                                    <Select.Option key={s.id} value={s.id} disabled={isEnrolled}>
+                                                        <Space>
+                                                            <Avatar size="small" icon={<UserOutlined />} />
+                                                            {titleText}
+                                                            {s.email && titleText !== s.email && (
+                                                                <span className="text-muted-foreground text-xs ml-1">({s.email})</span>
+                                                            )}
+                                                            {isEnrolled && (
+                                                                <Tag color="default" className="text-[10px] ml-1">Đã trong lớp</Tag>
+                                                            )}
+                                                        </Space>
+                                                    </Select.Option>
+                                                );
+                                            });
+                                        })()}
+                                    </Select>
+                                    <Button
+                                        type="primary"
+                                        icon={<UserAddOutlined />}
+                                        onClick={handleEnrollBulk}
+                                        loading={isEnrollingBulk}
+                                        disabled={selectedStudentIdsToEnroll.length === 0}
+                                    >
+                                        Thêm ({selectedStudentIdsToEnroll.length})
+                                    </Button>
+                                </div>
                             </div>
                         )}
 
@@ -612,8 +672,17 @@ const TeacherManageClasses: React.FC = () => {
                                     ] : []}
                                 >
                                     <List.Item.Meta
-                                        avatar={<Avatar icon={<UserOutlined />} />}
-                                        title={<Text strong>{item.student?.fullName || item.student?.username}</Text>}
+                                        avatar={<Avatar icon={<UserOutlined />} className="cursor-pointer hover:ring-2 ring-blue-500 transition-all shrink-0" onClick={() => { setViewingStudent(item.student); setStudentDetailOpen(true); }} />}
+                                        title={
+                                            <span 
+                                                className="cursor-pointer font-bold text-slate-800 hover:text-blue-600 transition-colors flex items-center gap-1.5"
+                                                onClick={() => { setViewingStudent(item.student); setStudentDetailOpen(true); }}
+                                                title="Nhấn để xem thông tin học viên"
+                                            >
+                                                {item.student?.fullName || item.student?.username}
+                                                <InfoCircleOutlined className="text-xs text-blue-500 opacity-60 hover:opacity-100" />
+                                            </span>
+                                        }
                                         description={(item.student?.fullName || item.student?.username) !== item.student?.email ? item.student?.email : undefined}
                                     />
                                 </List.Item>
@@ -623,99 +692,23 @@ const TeacherManageClasses: React.FC = () => {
                     </div>
                 </Modal>
 
-                <Drawer
-                    title={`Điểm danh nhanh - ${attendanceClass?.title}`}
-                    placement="right"
-                    onClose={() => setAttendanceModalVisible(false)}
+                <QuickAttendanceDrawer
                     open={attendanceModalVisible}
-                    width={800}
-                    extra={
-                        <Button type="primary" onClick={handleSaveAttendance} loading={savingAttendance} disabled={!attendanceSessionNo}>
-                            Lưu điểm danh
-                        </Button>
-                    }
-                >
-                    <div className="mb-4 flex items-center gap-4">
-                        <Text strong>Chọn buổi học:</Text>
-                        <Select 
-                            placeholder="Chọn buổi..." 
-                            value={attendanceSessionNo} 
-                            onChange={handleFetchAttendance}
-                            style={{ width: 250 }}
-                            options={
-                                attendanceClass ? (() => {
-                                    const dates = calculateSessionDates(attendanceClass);
-                                    if (dates.length > 0) {
-                                        return dates.map((date, i) => ({
-                                            value: i + 1,
-                                            label: `Buổi ${i + 1} (${dayjs(date).format('DD/MM/YYYY')})`
-                                        }));
-                                    }
-                                    const length = attendanceClass.sessionCount || attendanceClass.course?.lessonCount || 30;
-                                    return Array.from({ length }, (_, i) => ({ value: i + 1, label: `Buổi ${i + 1}` }));
-                                })() : []
-                            }
-                        />
-                    </div>
-                    
-                    {attendanceSessionNo ? (
-                        <Table
-                            dataSource={attendanceList}
-                            loading={attendanceLoading}
-                            rowKey="studentId"
-                            pagination={false}
-                            columns={[
-                                {
-                                    title: 'Học viên',
-                                    dataIndex: 'student',
-                                    render: (student: any) => student?.fullName || student?.username,
-                                },
-                                {
-                                    title: 'Trạng thái',
-                                    key: 'status',
-                                    width: 350,
-                                    render: (_, record) => (
-                                        <Radio.Group 
-                                            value={record.status} 
-                                            onChange={(e) => {
-                                                const newList = [...attendanceList];
-                                                const idx = newList.findIndex(a => a.studentId === record.studentId);
-                                                if (idx > -1) newList[idx].status = e.target.value;
-                                                setAttendanceList(newList);
-                                            }}
-                                        >
-                                            <Radio value="present"><Tag color="green">Có mặt</Tag></Radio>
-                                            <Radio value="late"><Tag color="orange">Đi muộn</Tag></Radio>
-                                            <Radio value="excused"><Tag color="blue">Có phép</Tag></Radio>
-                                            <Radio value="absent"><Tag color="red">Vắng</Tag></Radio>
-                                        </Radio.Group>
-                                    )
-                                },
-                                {
-                                    title: 'Ghi chú',
-                                    key: 'note',
-                                    render: (_, record) => (
-                                        <Input 
-                                            placeholder="Ghi chú..." 
-                                            value={record.note}
-                                            onChange={(e) => {
-                                                const newList = [...attendanceList];
-                                                const idx = newList.findIndex(a => a.studentId === record.studentId);
-                                                if (idx > -1) newList[idx].note = e.target.value;
-                                                setAttendanceList(newList);
-                                            }}
-                                        />
-                                    )
-                                }
-                            ]}
-                        />
-                    ) : (
-                        <div className="text-center py-10 text-muted-foreground">
-                            Vui lòng chọn buổi học để điểm danh
-                        </div>
-                    )}
-                </Drawer>
+                    onClose={() => setAttendanceModalVisible(false)}
+                    classData={attendanceClass}
+                    initialSessionNo={attendanceSessionNo}
+                    onSuccess={() => fetchData()}
+                />
             </div>
+
+            <StudentDetailModal
+                open={studentDetailOpen}
+                onClose={() => setStudentDetailOpen(false)}
+                studentId={viewingStudent?.id}
+                initialStudent={viewingStudent}
+                classId={selectedClassForStudents?.id || attendanceClass?.id}
+                className={selectedClassForStudents?.title || attendanceClass?.title}
+            />
         </DashboardLayout>
     );
 };

@@ -32,7 +32,7 @@ export class ProgressController extends ProgressControllerBase {
     if (!studentId || !courseId) {
       throw new common.BadRequestException("studentId và courseId là bắt buộc");
     }
-    return this.prisma.progress.findMany({
+    const list = await this.prisma.progress.findMany({
       where: {
         studentId,
         lesson: {
@@ -62,6 +62,24 @@ export class ProgressController extends ProgressControllerBase {
         },
       },
     });
+
+    // Deduplicate by lessonId: pick the record that is completed or has the most completedItems
+    const map = new Map<string, any>();
+    for (const p of list) {
+      const lid = p.lesson?.id;
+      if (!lid) continue;
+      if (!map.has(lid)) {
+        map.set(lid, p);
+      } else {
+        const existing = map.get(lid);
+        if (!existing.completed && p.completed) {
+          map.set(lid, p);
+        } else if (!existing.completed && (p.completedItems?.length || 0) > (existing.completedItems?.length || 0)) {
+          map.set(lid, p);
+        }
+      }
+    }
+    return Array.from(map.values());
   }
 
   @common.Get()
@@ -142,13 +160,23 @@ export class ProgressController extends ProgressControllerBase {
       completed: progress.completed // default to existing
     };
 
-    if (isLessonCompleted && !progress.completed) {
+    if (isLessonCompleted) {
       const now = new Date();
       updateData.completed = true;
-      updateData.completedAt = now;
+      updateData.completedAt = progress.completedAt ?? now;
       updateData.firstCompletedAt = progress.firstCompletedAt ?? now;
       const deadline = await this.getDeadlineForLesson(progress.lessonId, progress.studentId);
       updateData.completionStatus = (!deadline || now <= deadline) ? 'COMPLETED' : 'LATE';
+
+      // Đồng bộ toàn bộ progress record trùng (nếu có) của bài học này
+      await this.prisma.progress.updateMany({
+        where: { studentId: progress.studentId, lessonId: progress.lessonId },
+        data: {
+          completed: true,
+          completedAt: updateData.completedAt,
+          completionStatus: updateData.completionStatus,
+        },
+      });
     }
 
     return this.prisma.progress.update({
@@ -222,6 +250,26 @@ export class ProgressController extends ProgressControllerBase {
 
     const studentId = data.student?.connect?.id || data.student?.id || data.studentId;
     const lessonId = data.lesson?.connect?.id || data.lesson?.id || data.lessonId;
+
+    if (studentId && lessonId) {
+      const existing = await this.prisma.progress.findFirst({
+        where: { studentId, lessonId },
+      });
+      if (existing) {
+        if (completed && !existing.completed) {
+          return this.prisma.progress.update({
+            where: { id: existing.id },
+            data: {
+              completed: true,
+              completedAt: now,
+              firstCompletedAt: existing.firstCompletedAt ?? now,
+              completionStatus: completionStatus,
+            },
+          });
+        }
+        return existing;
+      }
+    }
 
     if (completed) {
       firstCompletedAt = now;

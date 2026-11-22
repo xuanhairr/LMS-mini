@@ -186,8 +186,12 @@ export class CourseController extends CourseControllerBase {
 
   @common.Get("/:id")
   @common.UseGuards(CourseAccessGuard)
-  async course(@common.Param() params: any): Promise<any> {
-    return this.service.course({
+  // @ts-ignore
+  async course(
+    @common.Param() params: any,
+    @common.Req() request: any
+  ): Promise<any> {
+    const courseData: any = await this.service.course({
       where: params,
       select: {
         id: true,
@@ -214,6 +218,8 @@ export class CourseController extends CourseControllerBase {
             duration: true,
             status: true,
             typeField: true,
+            order: true,
+            sessionNumber: true,
             createdAt: true,
             updatedAt: true,
             videos: {
@@ -270,6 +276,42 @@ export class CourseController extends CourseControllerBase {
         },
       },
     });
+
+    if (!courseData) return null;
+
+    // Sắp xếp danh sách bài học theo thứ tự tăng dần (order / sessionNumber / số thứ tự bài)
+    if (Array.isArray(courseData.lessons)) {
+      courseData.lessons.sort((a: any, b: any) => {
+        if (a.order !== undefined && b.order !== undefined && a.order !== b.order) {
+          return a.order - b.order;
+        }
+        if (a.sessionNumber !== undefined && b.sessionNumber !== undefined && a.sessionNumber !== b.sessionNumber) {
+          return (a.sessionNumber || 0) - (b.sessionNumber || 0);
+        }
+        return (a.title || "").localeCompare(b.title || "", undefined, { numeric: true, sensitivity: "base" });
+      });
+    }
+
+    // Bảo mật: Ẩn đáp án đúng đối với học viên để chống F12 gian lận
+    const user = request.user;
+    const roles: string[] = user?.roles || [];
+    const isStudent = roles.includes("STUDENT") && !roles.includes("ADMIN") && !roles.includes("HEAD_STAFF") && !roles.includes("STAFF") && !roles.includes("TEACHER");
+
+    if (isStudent && Array.isArray(courseData.lessons)) {
+      courseData.lessons.forEach((lesson: any) => {
+        if (Array.isArray(lesson.quizzes)) {
+          lesson.quizzes.forEach((quiz: any) => {
+            if (Array.isArray(quiz.questions)) {
+              quiz.questions.forEach((q: any) => {
+                delete q.correctAnswer;
+              });
+            }
+          });
+        }
+      });
+    }
+
+    return courseData;
   }
 
   @common.Patch("/:id")
@@ -329,7 +371,7 @@ export class CourseController extends CourseControllerBase {
     @common.Req() request: any,
     @common.Param() params: any
   ): Promise<any[]> {
-    return this.service.findLessons(params.id, {
+    const lessons = await this.service.findLessons(params.id, {
       select: {
         id: true,
         title: true,
@@ -392,6 +434,27 @@ export class CourseController extends CourseControllerBase {
         }
       }
     });
+
+    // Bảo mật: Ẩn đáp án đúng đối với học viên để chống F12 gian lận
+    const user = request.user;
+    const roles: string[] = user?.roles || [];
+    const isStudent = roles.includes("STUDENT") && !roles.includes("ADMIN") && !roles.includes("HEAD_STAFF") && !roles.includes("STAFF") && !roles.includes("TEACHER");
+
+    if (isStudent && Array.isArray(lessons)) {
+      lessons.forEach((lesson: any) => {
+        if (Array.isArray(lesson.quizzes)) {
+          lesson.quizzes.forEach((quiz: any) => {
+            if (Array.isArray(quiz.questions)) {
+              quiz.questions.forEach((q: any) => {
+                delete q.correctAnswer;
+              });
+            }
+          });
+        }
+      });
+    }
+
+    return lessons;
   }
 
   @common.Post("/:id/clone")

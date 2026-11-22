@@ -35,7 +35,10 @@ import {
     BookOutlined,
     ClockCircleOutlined,
     CalendarOutlined,
-    ImportOutlined
+    ImportOutlined,
+    UserAddOutlined,
+    CheckOutlined,
+    InfoCircleOutlined
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -45,6 +48,8 @@ import { CLASS_STATUS_CONFIG } from '@/lib/constants';
 import { useSystemConstants, getStatusConfig } from '@/contexts/SystemContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { StudentImport } from './components/StudentImport';
+import { StudentDetailModal } from '@/components/student/StudentDetailModal';
+import { QuickAttendanceDrawer } from '@/components/attendance/QuickAttendanceDrawer';
 
 const { RangePicker } = DatePicker;
 const { Text } = Typography;
@@ -116,6 +121,10 @@ const ManageClassesContent: React.FC = () => {
     const [enrollmentLoading, setEnrollmentLoading] = useState(false);
     const [allStudents, setAllStudents] = useState<any[]>([]);
     const [studentSearchLoading, setStudentSearchLoading] = useState(false);
+    const [selectedStudentIdsToEnroll, setSelectedStudentIdsToEnroll] = useState<string[]>([]);
+    const [isEnrollingBulk, setIsEnrollingBulk] = useState(false);
+    const [studentDetailOpen, setStudentDetailOpen] = useState(false);
+    const [viewingStudent, setViewingStudent] = useState<any>(null);
 
     // Search dropdown loading states
     const [courseSearchLoading, setCourseSearchLoading] = useState(false);
@@ -544,8 +553,8 @@ const ManageClassesContent: React.FC = () => {
         setStudentSearchLoading(true);
         try {
             const query = username
-                ? `/users?where[roles][has]=STUDENT&where[username][contains]=${username}&take=20`
-                : `/users?where[roles][has]=STUDENT&take=20`;
+                ? `/users?where[roles][has]=STUDENT&where[username][contains]=${username}&take=50`
+                : `/users?where[roles][has]=STUDENT&take=50`;
             const res = await apiFetch<any>(query);
             setAllStudents(res.data?.items || (Array.isArray(res.data) ? res.data : []));
         } catch (error) {
@@ -555,16 +564,35 @@ const ManageClassesContent: React.FC = () => {
         }
     };
 
+    const handleEnrollBulk = async () => {
+        if (!selectedClassForStudents || selectedStudentIdsToEnroll.length === 0) return;
+        setIsEnrollingBulk(true);
+        try {
+            const res = await apiFetch<any>(`/classes/${selectedClassForStudents.id}/enroll-bulk`, {
+                method: 'POST',
+                body: JSON.stringify({ userIds: selectedStudentIdsToEnroll })
+            });
+            const count = res.data?.count ?? selectedStudentIdsToEnroll.length;
+            notification.success({
+                message: 'Ghi danh thành công',
+                description: `Đã thêm ${count} học viên vào lớp ${selectedClassForStudents.title}!`
+            });
+            setSelectedStudentIdsToEnroll([]);
+            fetchClassEnrollments(selectedClassForStudents.id);
+            fetchData(currentPage, pageSize, filterForm.getFieldsValue());
+        } catch (error: any) {
+            notification.error({ message: 'Lỗi ghi danh', description: error.message || 'Không thể thêm học viên' });
+        } finally {
+            setIsEnrollingBulk(false);
+        }
+    };
+
     const handleEnrollStudent = async (studentId: string) => {
         if (!selectedClassForStudents) return;
         try {
-            await apiFetch<any>('/enrollments', {
+            await apiFetch<any>(`/classes/${selectedClassForStudents.id}/enroll-bulk`, {
                 method: 'POST',
-                body: JSON.stringify({
-                    student: { id: studentId },
-                    class: { id: selectedClassForStudents.id },
-                    course: selectedClassForStudents.courseId ? { id: selectedClassForStudents.courseId } : undefined
-                })
+                body: JSON.stringify({ userIds: [studentId] })
             });
             notification.success({ message: 'Đã ghi danh', description: 'Thêm học viên vào lớp thành công' });
             fetchClassEnrollments(selectedClassForStudents.id);
@@ -1017,35 +1045,87 @@ const ManageClassesContent: React.FC = () => {
                             label: (<span><UserOutlined />Thêm thủ công</span>),
                             children: (
                     <div className="space-y-4 py-4">
-                        <div className="bg-primary/5 p-4 rounded-lg flex gap-2">
-                            <Select
-                                showSearch
-                                placeholder="Tìm kiếm học viên để thêm vào lớp..."
-                                style={{ flex: 1 }}
-                                onSearch={(val) => handleSearchDebounced(val, 'student')}
-                                onChange={handleEnrollStudent}
-                                loading={studentSearchLoading}
-                                filterOption={false}
-                                value={null}
-                                suffixIcon={<SearchOutlined />}
-                                notFoundContent={studentSearchLoading ? <Spin size="small" /> : 'Không tìm thấy học viên'}
-                                className="rounded-lg"
-                            >
-                                {allStudents.map(s => {
-                                    const titleText = s.fullName || s.username;
-                                    return (
-                                        <Select.Option key={s.id} value={s.id}>
-                                            <Space>
-                                                <Avatar size="small" icon={<UserOutlined />} />
-                                                {titleText}
-                                                {s.email && titleText !== s.email && (
-                                                    <span className="text-muted-foreground text-xs ml-1">({s.email})</span>
-                                                )}
-                                            </Space>
-                                        </Select.Option>
-                                    );
-                                })}
-                            </Select>
+                        <div className="bg-primary/5 p-4 rounded-xl border border-primary/10 space-y-3">
+                            <div className="flex items-center justify-between">
+                                <Text strong className="text-slate-700">
+                                    Thêm học viên vào lớp:
+                                </Text>
+                                {allStudents.length > 0 && (
+                                    <Space size="small">
+                                        {selectedStudentIdsToEnroll.length > 0 && (
+                                            <Button 
+                                                size="small" 
+                                                type="text" 
+                                                onClick={() => setSelectedStudentIdsToEnroll([])}
+                                            >
+                                                Bỏ chọn ({selectedStudentIdsToEnroll.length})
+                                            </Button>
+                                        )}
+                                        <Button
+                                            size="small"
+                                            type="dashed"
+                                            onClick={() => {
+                                                const enrolledIds = new Set(classEnrollments.map((e: any) => e.student?.id));
+                                                const notEnrolled = allStudents.filter(s => !enrolledIds.has(s.id));
+                                                setSelectedStudentIdsToEnroll(notEnrolled.map(s => s.id));
+                                            }}
+                                        >
+                                            Chọn tất cả học viên khả dụng
+                                        </Button>
+                                    </Space>
+                                )}
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <Select
+                                    mode="multiple"
+                                    showSearch
+                                    placeholder="Tìm kiếm và chọn nhiều học viên cùng lúc..."
+                                    style={{ flex: 1 }}
+                                    onSearch={(val) => handleSearchDebounced(val, 'student')}
+                                    onChange={(vals) => setSelectedStudentIdsToEnroll(vals)}
+                                    value={selectedStudentIdsToEnroll}
+                                    loading={studentSearchLoading}
+                                    filterOption={false}
+                                    suffixIcon={<SearchOutlined />}
+                                    notFoundContent={studentSearchLoading ? <Spin size="small" /> : 'Không tìm thấy học viên'}
+                                    className="rounded-lg"
+                                    maxTagCount="responsive"
+                                >
+                                    {(() => {
+                                        const enrolledIds = new Set(classEnrollments.map((e: any) => e.student?.id));
+                                        return allStudents.map(s => {
+                                            const isEnrolled = enrolledIds.has(s.id);
+                                            const titleText = s.fullName || s.username;
+                                            return (
+                                                <Select.Option key={s.id} value={s.id} disabled={isEnrolled}>
+                                                    <Space>
+                                                        <Avatar size="small" icon={<UserOutlined />} src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${s.username}`} />
+                                                        <span>{titleText}</span>
+                                                        {s.email && titleText !== s.email && (
+                                                            <span className="text-muted-foreground text-xs">({s.email})</span>
+                                                        )}
+                                                        {isEnrolled && (
+                                                            <Tag color="default" className="text-[10px] ml-1">Đã trong lớp</Tag>
+                                                        )}
+                                                    </Space>
+                                                </Select.Option>
+                                            );
+                                        });
+                                    })()}
+                                </Select>
+
+                                <Button
+                                    type="primary"
+                                    icon={<UserAddOutlined />}
+                                    onClick={handleEnrollBulk}
+                                    loading={isEnrollingBulk}
+                                    disabled={selectedStudentIdsToEnroll.length === 0}
+                                    className="shrink-0"
+                                >
+                                    Thêm vào lớp {selectedStudentIdsToEnroll.length > 0 ? `(${selectedStudentIdsToEnroll.length})` : ''}
+                                </Button>
+                            </div>
                         </div>
 
                         <List
@@ -1061,8 +1141,29 @@ const ManageClassesContent: React.FC = () => {
                                     ]}
                                 >
                                     <List.Item.Meta
-                                        avatar={<Avatar src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.student?.username}`} />}
-                                        title={<Text strong>{item.student?.fullName || item.student?.username}</Text>}
+                                        avatar={
+                                            <Avatar 
+                                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.student?.username}`} 
+                                                className="cursor-pointer hover:ring-2 ring-blue-500 transition-all shrink-0"
+                                                onClick={() => {
+                                                    setViewingStudent(item.student);
+                                                    setStudentDetailOpen(true);
+                                                }}
+                                            />
+                                        }
+                                        title={
+                                            <span 
+                                                className="cursor-pointer font-bold text-slate-800 hover:text-blue-600 transition-colors flex items-center gap-1.5"
+                                                onClick={() => {
+                                                    setViewingStudent(item.student);
+                                                    setStudentDetailOpen(true);
+                                                }}
+                                                title="Nhấn để xem thông tin học viên"
+                                            >
+                                                {item.student?.fullName || item.student?.username}
+                                                <InfoCircleOutlined className="text-xs text-blue-500 opacity-60 hover:opacity-100" />
+                                            </span>
+                                        }
                                         description={(item.student?.fullName || item.student?.username) !== item.student?.email ? item.student?.email : undefined}
                                     />
                                 </List.Item>
@@ -1088,99 +1189,23 @@ const ManageClassesContent: React.FC = () => {
                     ]} />
                 </Drawer>
 
-                <Drawer
-                    title={`Điểm danh nhanh - ${attendanceClass?.title}`}
-                    placement="right"
-                    onClose={() => setAttendanceModalVisible(false)}
+                <QuickAttendanceDrawer
                     open={attendanceModalVisible}
-                    width={800}
-                    extra={
-                        <Button type="primary" onClick={handleSaveAttendance} loading={savingAttendance} disabled={!attendanceSessionNo}>
-                            Lưu điểm danh
-                        </Button>
-                    }
-                >
-                    <div className="mb-4 flex items-center gap-4">
-                        <Typography.Text strong>Chọn buổi học:</Typography.Text>
-                        <Select 
-                            placeholder="Chọn buổi..." 
-                            value={attendanceSessionNo} 
-                            onChange={handleFetchAttendance}
-                            style={{ width: 250 }}
-                            options={
-                                attendanceClass ? (() => {
-                                    const dates = calculateSessionDates(attendanceClass);
-                                    if (dates.length > 0) {
-                                        return dates.map((date, i) => ({
-                                            value: i + 1,
-                                            label: `Buổi ${i + 1} (${dayjs(date).format('DD/MM/YYYY')})`
-                                        }));
-                                    }
-                                    const length = attendanceClass.sessionCount || attendanceClass.course?.lessonCount || 30;
-                                    return Array.from({ length }, (_, i) => ({ value: i + 1, label: `Buổi ${i + 1}` }));
-                                })() : []
-                            }
-                        />
-                    </div>
-                    
-                    {attendanceSessionNo ? (
-                        <Table
-                            dataSource={attendanceList}
-                            loading={attendanceLoading}
-                            rowKey="studentId"
-                            pagination={false}
-                            columns={[
-                                {
-                                    title: 'Học viên',
-                                    dataIndex: 'student',
-                                    render: (student: any) => student?.fullName || student?.username,
-                                },
-                                {
-                                    title: 'Trạng thái',
-                                    key: 'status',
-                                    width: 350,
-                                    render: (_, record) => (
-                                        <Radio.Group 
-                                            value={record.status} 
-                                            onChange={(e) => {
-                                                const newList = [...attendanceList];
-                                                const idx = newList.findIndex(a => a.studentId === record.studentId);
-                                                if (idx > -1) newList[idx].status = e.target.value;
-                                                setAttendanceList(newList);
-                                            }}
-                                        >
-                                            <Radio value="present"><Tag color="green">Có mặt</Tag></Radio>
-                                            <Radio value="late"><Tag color="orange">Đi muộn</Tag></Radio>
-                                            <Radio value="excused"><Tag color="blue">Có phép</Tag></Radio>
-                                            <Radio value="absent"><Tag color="red">Vắng</Tag></Radio>
-                                        </Radio.Group>
-                                    )
-                                },
-                                {
-                                    title: 'Ghi chú',
-                                    key: 'note',
-                                    render: (_, record) => (
-                                        <Input 
-                                            placeholder="Ghi chú..." 
-                                            value={record.note}
-                                            onChange={(e) => {
-                                                const newList = [...attendanceList];
-                                                const idx = newList.findIndex(a => a.studentId === record.studentId);
-                                                if (idx > -1) newList[idx].note = e.target.value;
-                                                setAttendanceList(newList);
-                                            }}
-                                        />
-                                    )
-                                }
-                            ]}
-                        />
-                    ) : (
-                        <div className="text-center py-10 text-muted-foreground">
-                            Vui lòng chọn buổi học để điểm danh
-                        </div>
-                    )}
-                </Drawer>
+                    onClose={() => setAttendanceModalVisible(false)}
+                    classData={attendanceClass}
+                    initialSessionNo={attendanceSessionNo}
+                    onSuccess={() => fetchData()}
+                />
             </div>
+
+            <StudentDetailModal
+                open={studentDetailOpen}
+                onClose={() => setStudentDetailOpen(false)}
+                studentId={viewingStudent?.id}
+                initialStudent={viewingStudent}
+                classId={selectedClassForStudents?.id || attendanceClass?.id}
+                className={selectedClassForStudents?.title || attendanceClass?.title}
+            />
         </DashboardLayout>
     );
 };

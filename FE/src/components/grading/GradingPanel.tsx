@@ -6,11 +6,12 @@ import {
 } from 'antd';
 import {
     TrophyOutlined, CalculatorOutlined, CheckCircleOutlined, FileTextOutlined,
-    SettingOutlined, SendOutlined, ReloadOutlined, ExportOutlined
+    SettingOutlined, SendOutlined, ReloadOutlined, ExportOutlined, InfoCircleOutlined
 } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
+import { StudentDetailModal } from '@/components/student/StudentDetailModal';
 
 interface GradeConfigForm {
     attendanceWeight: number;
@@ -66,6 +67,8 @@ export const GradingPanel: React.FC<Props> = ({ classId, courseId, className }) 
     const [examDrawerOpen, setExamDrawerOpen] = useState(false);
     const [examLoading, setExamLoading] = useState(false);
     const [savingExam, setSavingExam] = useState(false);
+    const [studentModalOpen, setStudentModalOpen] = useState(false);
+    const [viewingStudent, setViewingStudent] = useState<any>(null);
 
     // ── Load cấu hình điểm ─────────────────────────────────────────
     const fetchConfig = useCallback(async () => {
@@ -284,8 +287,18 @@ export const GradingPanel: React.FC<Props> = ({ classId, courseId, className }) 
         {
             title: 'Học viên', key: 'student',
             render: (_: any, r: StudentResult) => (
-                <div>
-                    <div className="font-medium">{r.student?.fullName || r.student?.username}</div>
+                <div 
+                    className="cursor-pointer group p-1 -m-1 rounded-lg hover:bg-blue-50/70 transition-all select-none"
+                    onClick={() => {
+                        setViewingStudent(r.student);
+                        setStudentModalOpen(true);
+                    }}
+                    title="Nhấn để xem chi tiết học viên"
+                >
+                    <div className="font-medium text-slate-800 group-hover:text-blue-600 transition-colors flex items-center gap-1.5">
+                        {r.student?.fullName || r.student?.username}
+                        <InfoCircleOutlined className="text-xs text-blue-500 opacity-60 group-hover:opacity-100 transition-opacity" />
+                    </div>
                     <div className="text-xs text-gray-400">{r.student?.email}</div>
                 </div>
             )
@@ -474,6 +487,15 @@ export const GradingPanel: React.FC<Props> = ({ classId, courseId, className }) 
                     pagination={false}
                 />
             </Drawer>
+
+            <StudentDetailModal
+                open={studentModalOpen}
+                onClose={() => setStudentModalOpen(false)}
+                studentId={viewingStudent?.id}
+                initialStudent={viewingStudent}
+                classId={classId}
+                className={className}
+            />
         </div>
     );
 };

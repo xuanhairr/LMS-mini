@@ -14,20 +14,15 @@ export class QuizAttemptController {
   async create(
     @common.Req() request: any,
     @common.Body() data: any
-  ): Promise<QuizAttempt> {
+  ): Promise<any> {
     const user = request.user;
-    const { quizId, score, totalCorrect, passed, answers } = data;
+    const { quizId, answers } = data;
     
-    return this.service.create({
-      data: {
-        score,
-        totalCorrect,
-        passed,
-        answers,
-        quiz: { connect: { id: quizId } },
-        student: { connect: { id: user.id } },
-      },
-    });
+    if (!quizId) {
+      throw new common.BadRequestException("quizId là bắt buộc");
+    }
+
+    return this.service.submitAndGrade(user.id, quizId, answers || {});
   }
 
   @common.Get()

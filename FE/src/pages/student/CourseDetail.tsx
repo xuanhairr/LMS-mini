@@ -40,7 +40,10 @@ import {
     HistoryOutlined,
     DoubleRightOutlined,
     PaperClipOutlined,
-    DownloadOutlined
+    DownloadOutlined,
+    GithubOutlined,
+    CheckCircleOutlined,
+    SearchOutlined
 } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -186,10 +189,13 @@ const CourseDetail: React.FC = () => {
             const lesson = course.lessons?.find((l: any) => l.id === lessonId);
             if (!lesson) return;
             
-            // Lấy tổng số item cần học từ lesson
+            // Lấy tổng số item cần học từ lesson (bao gồm cả videos và quizzes)
             const expectedItemIds: string[] = [];
             if (lesson.videos && lesson.videos.length > 0) {
                 lesson.videos.forEach((_: any, idx: number) => expectedItemIds.push(`${lesson.id}_v_${idx}`));
+            }
+            if (lesson.quizzes && lesson.quizzes.length > 0) {
+                lesson.quizzes.forEach((_: any, idx: number) => expectedItemIds.push(`${lesson.id}_q_${idx}`));
             }
             if ((!lesson.videos || lesson.videos.length === 0) && (!lesson.quizzes || lesson.quizzes.length === 0)) {
                 expectedItemIds.push(`${lesson.id}_d`);
@@ -198,10 +204,17 @@ const CourseDetail: React.FC = () => {
             const existingProgress = progressRecords.find(p => p.lessonId === lessonId);
             const currentCompletedItems = existingProgress?.completedItems || [];
             
-            if (currentCompletedItems.includes(itemId)) return; // Đã xem rồi
-            
-            const newCompletedItems = [...currentCompletedItems, itemId];
-            const isLessonCompleted = expectedItemIds.length > 0 && expectedItemIds.every(id => newCompletedItems.includes(id));
+            const newCompletedItems = currentCompletedItems.includes(itemId)
+                ? currentCompletedItems
+                : [...currentCompletedItems, itemId];
+
+            const isLessonCompleted = expectedItemIds.length > 0 
+                ? expectedItemIds.every(id => newCompletedItems.includes(id)) 
+                : true;
+
+            if (currentCompletedItems.includes(itemId) && existingProgress?.completed) {
+                return; // Đã xem và bài học đã được đánh dấu hoàn thành
+            }
 
             if (existingProgress) {
                 await apiFetch(`/progresses/${existingProgress.id}/complete-item`, {
@@ -258,6 +271,27 @@ const CourseDetail: React.FC = () => {
     const [githubLink, setGithubLink] = useState('');
     const [githubLinkError, setGithubLinkError] = useState('');
     const [note, setNote] = useState('');
+    const [githubInfo, setGithubInfo] = useState<any>(null);
+    const [checkingGithub, setCheckingGithub] = useState(false);
+
+    const handleCheckGithub = async () => {
+        if (!githubLink.trim()) {
+            setGithubLinkError('Vui lòng nhập link GitHub');
+            return;
+        }
+        setCheckingGithub(true);
+        try {
+            const res = await apiFetch<any>(`/upload/github-info?url=${encodeURIComponent(githubLink.trim())}`);
+            setGithubInfo(res.data);
+            setGithubLinkError('');
+            message.success('Đã xác thực repository GitHub thành công!');
+        } catch (err: any) {
+            setGithubInfo(null);
+            setGithubLinkError(err?.message || 'Không tìm thấy repository GitHub này hoặc ở chế độ Private');
+        } finally {
+            setCheckingGithub(false);
+        }
+    };
 
     const handleSubmitHomework = async () => {
         if (!submitModal || !enrollment) return;
@@ -520,13 +554,10 @@ const CourseDetail: React.FC = () => {
         fetchAttachments();
     }, [activeLesson?.id]);
 
-    // Tự động tạo progress record khi học viên mở bài học có video
+    // Tự động tạo progress record khi học viên mở bài học (bất kể có video hay quiz)
     useEffect(() => {
         if (activeLesson?.id && enrollment && user) {
-            const hasVideo = activeLesson.videos && activeLesson.videos.length > 0;
-            if (hasVideo) {
-                ensureProgressRecord(activeLesson.id);
-            }
+            ensureProgressRecord(activeLesson.id);
         }
 
         // Set default selected homework when lesson changes
@@ -587,7 +618,7 @@ const CourseDetail: React.FC = () => {
         : [];
     const hasVideoInLesson = lessonVideos.length > 0;
     const allVideosWatched = currentProgressRecord?.completed === true || (
-        lessonVideos.length > 0 && lessonVideos.every(v => currentProgressRecord?.completedItems.includes(v.id))
+        lessonVideos.length > 0 && lessonVideos.every(v => (currentProgressRecord?.completedItems || []).includes(v.id))
     );
     const quizLocked = hasVideoInLesson && !allVideosWatched;
 
@@ -664,7 +695,7 @@ const CourseDetail: React.FC = () => {
                                                                             progressId={currentProgressRecord?.id}
                                                                             initialWatchedSeconds={(() => {
                                                                                 if (!currentProgressRecord) return 0;
-                                                                                const isCompleted = !!currentProgressRecord.completed || !!currentProgressRecord.completedItems?.includes(activeItem.id);
+                                                                                const isCompleted = !!currentProgressRecord?.completed || !!currentProgressRecord?.completedItems?.includes(activeItem.id);
                                                                                 if (isCompleted) return 0;
                                                                                 if (lessonVideos.length === 1) return currentProgressRecord.videoWatchedSeconds ?? 0;
                                                                                 return 0;
@@ -1252,6 +1283,7 @@ const CourseDetail: React.FC = () => {
                     setGithubLink('');
                     setGithubLinkError('');
                     setNote('');
+                    setGithubInfo(null);
                 }}
                 onOk={handleSubmitHomework}
                 confirmLoading={submitting}
@@ -1265,37 +1297,71 @@ const CourseDetail: React.FC = () => {
                         validateStatus={githubLinkError ? 'error' : ''}
                         help={githubLinkError}
                     >
-                        <Input
-                            placeholder="Ví dụ: https://github.com/username/repository"
-                            value={githubLink}
-                            onChange={(e) => {
-                                const val = e.target.value;
-                                setGithubLink(val);
-                                
-                                if (!val.trim()) {
-                                    setGithubLinkError('Vui lòng nhập link bài tập GitHub');
-                                    return;
-                                }
-
-                                try {
-                                    const url = new URL(val);
-                                    if (url.hostname !== 'github.com' && url.hostname !== 'www.github.com') {
-                                        setGithubLinkError('Vui lòng nhập đường dẫn GitHub hợp lệ');
-                                    } else {
-                                        setGithubLinkError('');
+                        <Space.Compact style={{ width: '100%' }}>
+                            <Input
+                                placeholder="Ví dụ: https://github.com/username/repository"
+                                value={githubLink}
+                                onChange={(e) => {
+                                    const val = e.target.value;
+                                    setGithubLink(val);
+                                    setGithubInfo(null);
+                                    if (!val.trim()) {
+                                        setGithubLinkError('Vui lòng nhập link bài tập GitHub');
+                                        return;
                                     }
-                                } catch (err) {
-                                    setGithubLinkError('Vui lòng nhập đường dẫn GitHub hợp lệ');
-                                }
-                            }}
-                        />
+                                    try {
+                                        const url = new URL(val);
+                                        if (url.hostname !== 'github.com' && url.hostname !== 'www.github.com') {
+                                            setGithubLinkError('Vui lòng nhập đường dẫn GitHub hợp lệ');
+                                        } else {
+                                            setGithubLinkError('');
+                                        }
+                                    } catch {
+                                        setGithubLinkError('Vui lòng nhập đường dẫn GitHub hợp lệ');
+                                    }
+                                }}
+                            />
+                            <Button 
+                                type="primary"
+                                icon={<SearchOutlined />}
+                                loading={checkingGithub}
+                                onClick={handleCheckGithub}
+                            >
+                                Kiểm tra Repo
+                            </Button>
+                        </Space.Compact>
                     </Form.Item>
+
+                    {githubInfo && (
+                        <div className="mb-4 p-3 bg-slate-50 border border-slate-200 rounded-xl animate-fade-in text-xs space-y-2">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-1.5 font-semibold text-slate-800">
+                                    <GithubOutlined className="text-base" /> {githubInfo.fullName}
+                                </div>
+                                <Tag color="green" className="m-0 flex items-center gap-1">
+                                    <CheckCircleOutlined /> Repo hợp lệ
+                                </Tag>
+                            </div>
+                            <div className="text-slate-500">{githubInfo.description}</div>
+                            <div className="flex flex-wrap gap-2 pt-1">
+                                <Tag color="blue">{githubInfo.language || 'Code'}</Tag>
+                                <Tag>⭐ {githubInfo.stars} stars</Tag>
+                                <Tag>🌿 Branch: {githubInfo.defaultBranch}</Tag>
+                            </div>
+                            {githubInfo.lastCommit && (
+                                <div className="pt-1 text-[11px] text-slate-500 border-t border-slate-200">
+                                    <strong>Commit mới nhất:</strong> {githubInfo.lastCommit.message} ({dayjs(githubInfo.lastCommit.date).format('HH:mm DD/MM/YYYY')})
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     <Form.Item label="Ghi chú thêm">
                         <Input.TextArea
                             placeholder="Nhập ghi chú cho giảng viên nếu có..."
                             value={note}
                             onChange={(e) => setNote(e.target.value)}
-                            rows={4}
+                            rows={3}
                         />
                     </Form.Item>
                 </Form>

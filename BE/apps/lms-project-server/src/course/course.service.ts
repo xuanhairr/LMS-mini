@@ -56,6 +56,7 @@ export class CourseService extends CourseServiceBase {
   ): Promise<any[]> {
     return this.prisma.lesson.findMany({
       ...args,
+      orderBy: args.orderBy || { order: 'asc' },
       where: {
         ...args.where,
         course: { id: parentId }

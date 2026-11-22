@@ -1,14 +1,17 @@
 import { Controller, Post, Body, Req, UseGuards } from "@nestjs/common";
 import { ApiTags, ApiOkResponse, ApiBody } from "@nestjs/swagger";
+import { ThrottlerGuard, Throttle, SkipThrottle } from "@nestjs/throttler";
 import { AuthService } from "./auth.service";
 import { LoginCredentials } from "./LoginCredentials";
 import { UserInfo } from "./UserInfo";
 
 @ApiTags("auth")
 @Controller()
+@UseGuards(ThrottlerGuard)
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
+    @Throttle({ default: { limit: 60, ttl: 60000 } })
     @Post("login")
     @ApiOkResponse({ type: UserInfo })
     @ApiBody({ type: LoginCredentials })
@@ -16,24 +19,28 @@ export class AuthController {
         return this.authService.login(body);
     }
 
+    @SkipThrottle()
     @Post("logout")
     @ApiOkResponse({ type: Boolean })
     async logout(): Promise<boolean> {
         return true;
     }
 
+    @Throttle({ default: { limit: 30, ttl: 60000 } })
     @Post("verify-email")
     @ApiOkResponse({ type: UserInfo })
     async verifyEmail(@Body() body: { userId: string, code: string }): Promise<UserInfo> {
         return this.authService.verifyEmail(body.userId, body.code);
     }
 
+    @Throttle({ default: { limit: 10, ttl: 300000 } })
     @Post("forgot-password")
     @ApiOkResponse({ type: Object })
     async forgotPassword(@Body() body: { emailOrUsername: string }): Promise<any> {
         return this.authService.forgotPassword(body.emailOrUsername);
     }
 
+    @Throttle({ default: { limit: 30, ttl: 300000 } })
     @Post("reset-password")
     @ApiOkResponse({ type: Object })
     async resetPassword(@Body() body: { token: string, newPassword: string }): Promise<any> {

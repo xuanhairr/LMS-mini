@@ -61,6 +61,8 @@ interface User {
   status?: 'active' | 'locked';
   creator?: { username: string; fullName?: string };
   updater?: { username: string; fullName?: string };
+  departmentId?: string;
+  department?: { id: string; code: string; name: string };
   createdAt: string;
   updatedAt: string;
 }
@@ -81,6 +83,7 @@ const AdminUsersPage: React.FC = () => {
   // State for data
   const [users, setUsers] = useState<User[]>([]);
   const [availableRoles, setAvailableRoles] = useState<RoleConfig[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
 
@@ -304,6 +307,7 @@ const AdminUsersPage: React.FC = () => {
 
   useEffect(() => {
     fetchRoles();
+    apiFetch<any[]>('/departments').then(res => setDepartments(res.data || [])).catch(() => {});
 
     const fetchStatuses = async () => {
       try {
@@ -355,7 +359,8 @@ const AdminUsersPage: React.FC = () => {
     if (user) {
       form.setFieldsValue({
         ...user,
-        role: user.roles[0]
+        role: user.roles[0],
+        departmentId: user.departmentId || undefined
       });
     } else {
       form.resetFields();
@@ -555,6 +560,19 @@ const AdminUsersPage: React.FC = () => {
           ))}
         </Space>
       ),
+    },
+    {
+      title: 'Bộ môn',
+      key: 'department',
+      width: 170,
+      render: (_: any, record: User) => {
+        if (!record.department) return <span className="text-muted-foreground text-xs italic">-</span>;
+        return (
+          <Tag color="geekblue" className="rounded font-medium px-2 py-0.5 text-xs">
+            {record.department.name}
+          </Tag>
+        );
+      },
     },
     {
       title: 'Trạng thái',
@@ -806,6 +824,13 @@ const AdminUsersPage: React.FC = () => {
                 ))}
               </Select>
             </Form.Item>
+            <Form.Item name="departmentId" label="Bộ môn / Khoa trực thuộc">
+              <Select
+                placeholder="Chọn bộ môn trực thuộc (áp dụng cho Giảng viên)..."
+                allowClear
+                options={departments.map(d => ({ value: d.id, label: `${d.name} (${d.code})` }))}
+              />
+            </Form.Item>
           </div>
           <Form.Item name="password" label={editingUser ? "Mật khẩu mới (Bỏ trống nếu không đổi)" : "Mật khẩu (Mặc định: Trùng với Email)"}>
             <Input.Password placeholder="Nhập mật khẩu..." />
@@ -840,6 +865,11 @@ const AdminUsersPage: React.FC = () => {
                   <Tag color={selectedUserForDetail.status === 'locked' ? 'error' : 'success'} className="border-0 rounded-full px-3">
                     {selectedUserForDetail.status === 'locked' ? 'Đã khóa' : 'Đang hoạt động'}
                   </Tag>
+                  {selectedUserForDetail.department && (
+                    <Tag color="geekblue" className="rounded-full px-3 m-0 border-0 text-[11px] font-medium">
+                      {selectedUserForDetail.department.name}
+                    </Tag>
+                  )}
                 </div>
               </div>
             </div>

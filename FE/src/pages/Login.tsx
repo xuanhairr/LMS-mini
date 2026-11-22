@@ -27,8 +27,12 @@ const Login: React.FC = () => {
       } else {
         message.error('Đăng nhập thất bại. Vui lòng thử lại.');
       }
-    } catch {
-      message.error('Đăng nhập thất bại. Vui lòng thử lại.');
+    } catch (err: any) {
+      if (err?.statusCode === 429 || err?.message?.includes('quá nhiều lần') || err?.message?.includes('Throttler')) {
+        message.error('Bạn đã thao tác quá nhiều lần! Vui lòng đợi trong giây lát rồi thử lại.');
+      } else {
+        message.error(err?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại tài khoản hoặc mật khẩu.');
+      }
     } finally {
       setLoading(false);
     }

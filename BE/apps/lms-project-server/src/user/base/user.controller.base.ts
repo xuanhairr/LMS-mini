@@ -74,6 +74,10 @@ export class UserControllerBase {
         forcePasswordChange: true,
         avatar: true,
         phoneNumber: true,
+        departmentId: true,
+        department: {
+          select: { id: true, code: true, name: true }
+        },
       },
     });
   }
@@ -98,6 +102,10 @@ export class UserControllerBase {
         forcePasswordChange: true,
         avatar: true,
         phoneNumber: true,
+        departmentId: true,
+        department: {
+          select: { id: true, code: true, name: true }
+        },
       },
     });
     if (result === null) {

@@ -150,6 +150,14 @@ export class UserController extends UserControllerBase {
           avatar: true,
           forcePasswordChange: true,
           phoneNumber: true,
+          departmentId: true,
+          department: {
+            select: {
+              id: true,
+              code: true,
+              name: true,
+            }
+          },
           creator: {
             select: {
               username: true,

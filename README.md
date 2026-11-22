@@ -4,19 +4,28 @@
 - **Frontend (FE)**: Xây dựng với React, Vite, TailwindCSS.
 - **Backend (BE)**: Xây dựng với NestJS, GraphQL, Prisma, Socket.io.
 
-## Hướng dẫn chạy dự án (1 lệnh duy nhất)
+## Hướng dẫn chạy dự án (1 Click duy nhất)
 
-Dự án đã được thiết lập các script giúp khởi chạy đồng thời cả Frontend và Backend chỉ với một lệnh. Các script này sẽ tự động mở hai cửa sổ dòng lệnh riêng biệt cho mỗi service.
+Dự án đã được thiết lập các script giúp khởi chạy trọn gói: **MongoDB (Docker) + Backend (NestJS) + Frontend (React)** chỉ với một cú nhấp chuột.
 
 ### Dành cho Windows:
-Bạn có thể nhấp đúp vào tệp `run.bat` ở thư mục gốc, hoặc chạy lệnh sau trong Command Prompt / PowerShell:
-```bash
-.\run.bat
-```
-Hoặc nếu bạn muốn dùng PowerShell script:
-```powershell
-.\run.ps1
-```
+- **Khởi động**: Bạn chỉ cần **nhấp đúp chuột vào file `run.bat`** ở thư mục gốc (hoặc chạy `.\run.ps1` trong PowerShell).
+- **Dừng hệ thống**: Nhấp đúp vào `stop.bat` để tắt Docker container và đóng 2 cửa sổ terminal của Frontend / Backend.
+
+### Dành cho Server / Linux (Triển khai Production):
+- Hệ thống hỗ trợ Docker Compose toàn diện (DB + BE + FE):
+  ```bash
+  docker compose up -d --build
+  ```
+- Tự động cập nhật code mới từ GitHub: `./deploy.sh`
+- Tự động sao lưu dữ liệu MongoDB: `./backup.sh`
+- Xem hướng dẫn chi tiết từng bước: [Hướng dẫn Triển khai lên Server (Deployment Guide)](docs/DEPLOYMENT_GUIDE.md)
+
+Sau khi khởi chạy:
+- **Frontend**: http://localhost:8080
+- **Backend API**: http://localhost:3000
+- **GraphQL**: http://localhost:3000/graphql
+- **Database**: MongoDB cổng 27017
 
 ## Tài liệu Dự Án (Agent Driven Development)
 

@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { ThrottlerModule } from "@nestjs/throttler";
 import { ScheduleModule } from "@nestjs/schedule";
 import { UserModule } from "./user/user.module";
 import { CourseModule } from "./course/course.module";
@@ -30,10 +31,21 @@ import { NotificationsModule } from "./notifications/notifications.module";
 import { CategoryModule } from "./category/category.module";
 import { AttendanceModule } from "./attendance/attendance.module";
 import { GradingModule } from "./grading/grading.module";
+import { DepartmentModule } from "./department/department.module";
 
 @Module({
   controllers: [],
   imports: [
+    ThrottlerModule.forRoot({
+      errorMessage: "Bạn đã thao tác quá nhiều lần. Vui lòng thử lại sau ít phút.",
+      throttlers: [
+        {
+          name: "default",
+          ttl: 60000,
+          limit: 120,
+        },
+      ],
+    }),
     ScheduleModule.forRoot(),
     UserModule,
     CourseModule,
@@ -59,6 +71,7 @@ import { GradingModule } from "./grading/grading.module";
     CategoryModule,
     AttendanceModule,
     GradingModule,
+    DepartmentModule,
     ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRootAsync({
       useClass: ServeStaticOptionsService,

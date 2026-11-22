@@ -1,0 +1,66 @@
+services:
+  # Database MongoDB with Replica Set for Prisma Transactions
+  db:
+    image: mongo:6.0
+    container_name: lms-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_REPLICA_SET_NAME: rs0
+    volumes:
+      - mongo_data:/data/db
+    entrypoint:
+      - /bin/bash
+      - -c
+      - openssl rand -base64 741 > /data/cert.crt; chmod 400 /data/cert.crt && chown 999 /data/cert.crt; /usr/local/bin/docker-entrypoint.sh mongod --bind_ip_all --keyFile /data/cert.crt --replSet rs0
+    healthcheck:
+      test: "test $$(mongosh --quiet --eval \"try { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'db:27017' }] }).ok } catch (_) { rs.status().ok }\") -eq 1"
+      interval: 5s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
+
+  # Backend NestJS Server
+  backend:
+    build:
+      context: ./BE/apps/lms-project-server
+      dockerfile: Dockerfile
+    container_name: lms-backend
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_URL: mongodb://db:27017/lms_project?replicaSet=rs0&directConnection=true
+      BCRYPT_SALT: 10
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-supersecretjwtkeyforlms1234567890}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      EMAIL_HOST: ${EMAIL_HOST:-smtp.gmail.com}
+      EMAIL_PORT: ${EMAIL_PORT:-465}
+      EMAIL_USER: ${EMAIL_USER:-}
+      EMAIL_PASS: ${EMAIL_PASS:-}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - backend_uploads:/app/uploads
+
+  # Frontend React (SPA served by Nginx with reverse proxy to backend)
+  frontend:
+    build:
+      context: ./FE
+      dockerfile: Dockerfile
+    container_name: lms-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
+  backend_uploads:

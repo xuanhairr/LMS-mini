@@ -70,6 +70,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           name: response.fullName || response.username,
           fullName: response.fullName,
           phoneNumber: response.phoneNumber,
+          roles: response.roles || [],
           role: response.roles.includes('ADMIN') ? 'ADMIN' :
             response.roles.includes('HEAD_STAFF') ? 'HEAD_STAFF' :
               response.roles.includes('STAFF') ? 'STAFF' :
@@ -110,6 +111,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           name: response.fullName || response.username,
           fullName: response.fullName,
           phoneNumber: response.phoneNumber,
+          roles: response.roles || [],
           role: response.roles.includes('ADMIN') ? 'ADMIN' :
             response.roles.includes('HEAD_STAFF') ? 'HEAD_STAFF' :
               response.roles.includes('STAFF') ? 'STAFF' :

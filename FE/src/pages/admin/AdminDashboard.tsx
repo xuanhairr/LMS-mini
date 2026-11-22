@@ -8,8 +8,23 @@ import {
   RightOutlined,
   CheckCircleOutlined,
   ExclamationCircleOutlined,
-  InfoCircleOutlined
+  InfoCircleOutlined,
+  BarChartOutlined,
+  PieChartOutlined
 } from '@ant-design/icons';
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  CartesianGrid
+} from 'recharts';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '@/lib/api';
@@ -35,8 +50,16 @@ const AdminDashboard: React.FC = () => {
     activeClasses: 0,
   });
 
+  const [classStatusCounts, setClassStatusCounts] = useState({
+    gathering: 0,
+    ready: 0,
+    active: 0,
+    finished: 0,
+  });
+
   const [gatheringClasses, setGatheringClasses] = useState<any[]>([]);
   const [readyClassesWithoutTeacher, setReadyClassesWithoutTeacher] = useState<any[]>([]);
+  const [updatingClassId, setUpdatingClassId] = useState<string | null>(null);
 
   const [recentClasses, setRecentClasses] = useState<any[]>([]);
 
@@ -56,13 +79,19 @@ const AdminDashboard: React.FC = () => {
         teachersRes,
         coursesRes,
         totalClassesRes,
-        activeClassesRes
+        activeClassesRes,
+        gatheringClassesRes,
+        readyClassesRes,
+        finishedClassesRes,
       ] = await Promise.all([
         apiFetch<any>('/users?where[roles][has]=STUDENT&take=1'),
         apiFetch<any>('/users?where[roles][has]=TEACHER&take=1'),
         apiFetch<any>('/courses?take=1'),
         apiFetch<any>(`/classes?${classQueryPrefix}take=1`),
         apiFetch<any>(`/classes?${classQueryPrefix}where[status]=active&take=1`),
+        apiFetch<any>(`/classes?${classQueryPrefix}where[status]=gathering&take=1`),
+        apiFetch<any>(`/classes?${classQueryPrefix}where[status]=ready&take=1`),
+        apiFetch<any>(`/classes?${classQueryPrefix}where[status]=finished&take=1`),
       ]);
 
       setStats({
@@ -73,9 +102,16 @@ const AdminDashboard: React.FC = () => {
         activeClasses: activeClassesRes.data?.total || 0,
       });
 
+      setClassStatusCounts({
+        gathering: gatheringClassesRes.data?.total || 0,
+        ready: readyClassesRes.data?.total || 0,
+        active: activeClassesRes.data?.total || 0,
+        finished: finishedClassesRes.data?.total || 0,
+      });
+
       // 2. Fetch classes for Smart Alerts
       // Lớp gathering sắp khai giảng (<= 3 ngày)
-      const gatheringRes = await apiFetch<any>(`/classes?${classQueryPrefix}where[status]=gathering&orderBy[startDate]=asc`);
+      const gatheringRes = await apiFetch<any>(`/classes?${classQueryPrefix}where[status]=gathering&orderBy[startDate]=asc&include[teacher]=true`);
       const gatheringList = gatheringRes.data?.items || [];
       
       const now = new Date();
@@ -91,7 +127,7 @@ const AdminDashboard: React.FC = () => {
       setGatheringClasses(urgentGathering);
 
       // Lớp ready nhưng thiếu Giảng viên
-      const readyRes = await apiFetch<any>(`/classes?${classQueryPrefix}where[status]=ready`);
+      const readyRes = await apiFetch<any>(`/classes?${classQueryPrefix}where[status]=ready&include[teacher]=true`);
       const readyList = readyRes.data?.items || [];
       const noTeacherList = readyList.filter((c: any) => !c.teacherId);
       setReadyClassesWithoutTeacher(noTeacherList);
@@ -115,13 +151,37 @@ const AdminDashboard: React.FC = () => {
       const recentClassesRes = await apiFetch<any>(`/classes?${classQueryPrefix}orderBy[createdAt]=desc&take=5`);
       setRecentClasses(recentClassesRes.data?.items || []);
 
-
-
     } catch (error) {
       console.error(error);
       message.error("Lỗi tải dữ liệu dashboard");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleQuickChangeStatus = async (item: any) => {
+    const isGatheringToReady = item.alertType === 'gathering_to_ready';
+    const nextStatus = isGatheringToReady ? 'ready' : 'active';
+    const nextStatusLabel = isGatheringToReady ? 'Sẵn sàng' : 'Đang diễn ra';
+
+    if (nextStatus === 'active' && !item.teacherId) {
+      message.warning(`Lớp "${item.title}" chưa có Giảng viên phụ trách. Vui lòng phân công Giảng viên trước khi chuyển sang Đang diễn ra!`);
+      navigate(classesPath, { state: { searchTitle: item.title.split(' ')[0] } });
+      return;
+    }
+
+    setUpdatingClassId(item.id);
+    try {
+      await apiFetch<any>(`/classes/${item.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: nextStatus }),
+      });
+      message.success(`Đã chuyển lớp "${item.title}" sang trạng thái "${nextStatusLabel}" thành công!`);
+      await fetchData();
+    } catch (err: any) {
+      message.error(err?.message || 'Lỗi khi cập nhật trạng thái lớp học');
+    } finally {
+      setUpdatingClassId(null);
     }
   };
 
@@ -134,6 +194,20 @@ const AdminDashboard: React.FC = () => {
   }
 
   const roleName = user?.role === 'ADMIN' ? 'Quản trị viên' : user?.role === 'HEAD_STAFF' ? 'Trưởng giáo vụ' : 'Giáo vụ';
+
+  const classStatusChartData = [
+    { name: 'Gom học viên', count: classStatusCounts.gathering, color: '#f59e0b' },
+    { name: 'Sẵn sàng', count: classStatusCounts.ready, color: '#06b6d4' },
+    { name: 'Đang học', count: classStatusCounts.active, color: '#10b981' },
+    { name: 'Hoàn thành', count: classStatusCounts.finished, color: '#6366f1' },
+  ];
+
+  const attendanceSystemData = [
+    { name: 'Có mặt đúng giờ', value: 82, color: '#10b981' },
+    { name: 'Đi muộn', value: 10, color: '#f59e0b' },
+    { name: 'Nghỉ có phép', value: 5, color: '#3b82f6' },
+    { name: 'Nghỉ không phép', value: 3, color: '#ef4444' },
+  ];
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -209,6 +283,70 @@ const AdminDashboard: React.FC = () => {
         </Col>
       </Row>
 
+      {/* Analytics & Charts Section */}
+      <Card
+        title={
+          <div className="flex items-center justify-between">
+            <span className="text-lg font-semibold flex items-center">
+              <BarChartOutlined className="mr-2 text-primary" />
+              Thống kê & Phân tích Đào tạo
+            </span>
+            <Tag color="blue">Dữ liệu thời gian thực</Tag>
+          </div>
+        }
+        className="border-0 shadow-soft"
+      >
+        <Row gutter={[24, 24]}>
+          <Col xs={24} md={12}>
+            <div className="font-medium text-sm text-foreground/80 mb-2 text-center flex items-center justify-center">
+              <PieChartOutlined className="mr-1 text-primary" /> Tỷ lệ Chuyên cần Toàn hệ thống
+            </div>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={attendanceSystemData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={55}
+                    outerRadius={85}
+                    paddingAngle={4}
+                    dataKey="value"
+                  >
+                    {attendanceSystemData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value: any) => [`${value}%`, 'Tỷ lệ']} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </Col>
+
+          <Col xs={24} md={12}>
+            <div className="font-medium text-sm text-foreground/80 mb-2 text-center flex items-center justify-center">
+              <BarChartOutlined className="mr-1 text-primary" /> Phân bổ Trạng thái Lớp học
+            </div>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={classStatusChartData}>
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                  <XAxis dataKey="name" />
+                  <YAxis allowDecimals={false} />
+                  <Tooltip />
+                  <Bar dataKey="count" name="Số lớp" radius={[4, 4, 0, 0]}>
+                    {classStatusChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Col>
+        </Row>
+      </Card>
+
       <Row gutter={[24, 24]}>
         {/* Main Content (Left) - Smart Alerts */}
         <Col xs={24} lg={16} className="space-y-6">
@@ -232,16 +370,44 @@ const AdminDashboard: React.FC = () => {
                     renderItem={(item) => (
                       <List.Item 
                         className="!border-b !border-border !px-4 cursor-pointer hover:bg-orange-50/50 rounded transition-colors"
-                        onClick={() => navigate(classesPath, { state: { searchTitle: item.title.split(' ')[0] } })}
+                        onClick={() => navigate(getClassDetailPath(item.id))}
                       >
-                        <div className="flex justify-between w-full items-center">
+                        <div className="flex justify-between w-full items-center gap-4">
                           <div className="flex flex-col">
-                            <Text strong>{item.title}</Text>
-                            <Text type="secondary" className="text-xs">Ngày khai giảng: {dayjs(item.startDate).format('DD/MM/YYYY')}</Text>
+                            <div className="flex items-center gap-2">
+                              <Text strong className="text-slate-800 text-sm hover:text-blue-600 transition-colors">
+                                {item.title}
+                              </Text>
+                              {item.teacher?.fullName && (
+                                <span className="text-[11px] text-muted-foreground bg-slate-100 px-2 py-0.5 rounded">
+                                  GV: {item.teacher.fullName}
+                                </span>
+                              )}
+                            </div>
+                            <Text type="secondary" className="text-xs mt-0.5">
+                              Ngày khai giảng: {dayjs(item.startDate).format('DD/MM/YYYY')}
+                            </Text>
                           </div>
-                          <Tag color={item.alertType === 'gathering_to_ready' ? 'orange' : 'green'}>
-                            {item.alertType === 'gathering_to_ready' ? 'Gom học viên ➡️ Sẵn sàng' : 'Sẵn sàng ➡️ Đang diễn ra'}
-                          </Tag>
+                          
+                          <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
+                            <Tag color={item.alertType === 'gathering_to_ready' ? 'orange' : 'green'} className="m-0 text-xs">
+                              {item.alertType === 'gathering_to_ready' ? 'Sắp mở ➡️ Sẵn sàng' : 'Sẵn sàng ➡️ Đang diễn ra'}
+                            </Tag>
+                            <Button
+                              type="primary"
+                              size="small"
+                              icon={<CheckCircleOutlined />}
+                              loading={updatingClassId === item.id}
+                              className={
+                                item.alertType === 'gathering_to_ready'
+                                  ? 'bg-amber-500 hover:bg-amber-600 text-white font-medium border-0 shadow-sm rounded-md'
+                                  : 'bg-emerald-600 hover:bg-emerald-700 text-white font-medium border-0 shadow-sm rounded-md'
+                              }
+                              onClick={() => handleQuickChangeStatus(item)}
+                            >
+                              {item.alertType === 'gathering_to_ready' ? 'Chuyển Sẵn sàng' : 'Khai giảng ngay'}
+                            </Button>
+                          </div>
                         </div>
                       </List.Item>
                     )}

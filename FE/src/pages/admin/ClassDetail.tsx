@@ -24,7 +24,8 @@ import {
     DatePicker,
     Progress,
     Tabs,
-    Drawer
+    Drawer,
+    notification
 } from 'antd';
 import {
     ArrowLeftOutlined,
@@ -43,7 +44,10 @@ import {
     PlayCircleOutlined,
     FileTextOutlined,
     DownloadOutlined,
-    TrophyOutlined
+    TrophyOutlined,
+    InfoCircleOutlined,
+    EyeOutlined,
+    SearchOutlined
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -53,6 +57,8 @@ import { CLASS_STATUS_CONFIG } from '@/lib/constants';
 import { useSystemConstants, getStatusConfig } from '@/contexts/SystemContext';
 import { AttendanceReportTab } from './components/AttendanceReportTab';
 import { GradingPanel } from '@/components/grading/GradingPanel';
+import { StudentDetailModal } from '@/components/student/StudentDetailModal';
+import { QuickAttendanceDrawer } from '@/components/attendance/QuickAttendanceDrawer';
 
 const { Title, Text } = Typography;
 
@@ -121,16 +127,19 @@ const ClassDetail: React.FC = () => {
     const [classData, setClassData] = useState<ClassDetailData | null>(null);
     const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
     const [availableStudents, setAvailableStudents] = useState<StudentOption[]>([]);
-    const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
+    const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
     const [searchLoading, setSearchLoading] = useState(false);
     const { user } = useAuth();
     const { classStatuses } = useSystemConstants();
-    const isAdminOrStaff = user?.roles && user.roles.some((r: string) => ['ADMIN', 'STAFF', 'HEAD_STAFF'].includes(r));
+    const isAdminOrStaff = (user?.roles && user.roles.some((r: string) => ['ADMIN', 'STAFF', 'HEAD_STAFF'].includes(r))) || ['ADMIN', 'STAFF', 'HEAD_STAFF'].includes(user?.role as string);
 
     const [isProgressModalOpen, setIsProgressModalOpen] = useState(false);
     const [selectedStudentForProgress, setSelectedStudentForProgress] = useState<any>(null);
     const [progressData, setProgressData] = useState<any>(null);
     const [progressLoading, setProgressLoading] = useState(false);
+    const [studentDetailOpen, setStudentDetailOpen] = useState(false);
+    const [viewingStudent, setViewingStudent] = useState<any>(null);
+    const [attendanceDrawerVisible, setAttendanceDrawerVisible] = useState(false);
 
     const handleViewProgress = async (record: any) => {
         setSelectedStudentForProgress(record);
@@ -151,10 +160,10 @@ const ClassDetail: React.FC = () => {
         if (!classData || !classData.enrollments) return;
         const data = classData.enrollments.map((e, index) => ({
             'STT': index + 1,
-            'Họ tên': e.student.fullName || e.student.username,
-            'Tài khoản': e.student.username,
-            'Email': e.student.email || 'N/A',
-            'Ngày tham gia': dayjs(e.createdAt).format('DD/MM/YYYY')
+            'Họ tên': e.student?.fullName || e.student?.username || 'N/A',
+            'Tài khoản': e.student?.username || 'N/A',
+            'Email': e.student?.email || 'N/A',
+            'Ngày tham gia': e.createdAt ? dayjs(e.createdAt).format('DD/MM/YYYY') : 'N/A'
         }));
         const ws = XLSX.utils.json_to_sheet(data);
         ws['!cols'] = [{ wch: 5 }, { wch: 30 }, { wch: 25 }, { wch: 30 }, { wch: 15 }];
@@ -318,31 +327,26 @@ const ClassDetail: React.FC = () => {
     };
 
     const handleEnroll = async () => {
-        if (!selectedStudentId || !classData) return;
-
-        // Check if student is already enrolled in this class (Frontend check)
-        const isAlreadyEnrolled = classData.enrollments?.some(e => e.student.id === selectedStudentId);
-        if (isAlreadyEnrolled) {
-            message.warning('Học viên này đã có tên trong danh sách lớp học');
-            return;
-        }
+        if (!selectedStudentIds || selectedStudentIds.length === 0 || !classData) return;
 
         try {
             setLoading(true);
-            const res = await apiFetch<any>('/enrollments', {
+            const res = await apiFetch<any>(`/classes/${classData.id}/enroll-bulk`, {
                 method: 'POST',
-                body: JSON.stringify({
-                    student: { id: selectedStudentId },
-                    class: { id: classData.id },
-                    course: classData.course?.id ? { id: classData.course.id } : undefined
-                }),
+                body: JSON.stringify({ userIds: selectedStudentIds }),
             });
-            message.success(res.message || 'Đã ghi danh học viên vào lớp');
+            const count = res.data?.count ?? selectedStudentIds.length;
+            message.success(`Đã ghi danh ${count} học viên vào lớp thành công!`);
             setIsEnrollModalOpen(false);
-            setSelectedStudentId(null);
+            setSelectedStudentIds([]);
             fetchClassData(); // Refresh list
-        } catch (error) {
-            message.error('Lỗi khi ghi danh học viên (Dữ liệu không hợp lệ hoặc lỗi hệ thống)');
+        } catch (error: any) {
+            const errorMsg = error?.message || 'Lỗi khi ghi danh học viên (Dữ liệu không hợp lệ hoặc lỗi hệ thống)';
+            notification.error({
+                message: 'Không thể thêm học viên vào lớp',
+                description: errorMsg,
+                duration: 6,
+            });
         } finally {
             setLoading(false);
         }
@@ -385,15 +389,25 @@ const ClassDetail: React.FC = () => {
             dataIndex: ['student', 'username'],
             key: 'username',
             render: (text: string, record: any) => (
-                <Space>
-                    <Avatar icon={<UserOutlined />} src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${text}`} />
+                <div 
+                    className="flex items-center gap-2 cursor-pointer group p-1 -m-1 rounded-lg hover:bg-blue-50/70 transition-all select-none"
+                    onClick={() => {
+                        setViewingStudent(record.student);
+                        setStudentDetailOpen(true);
+                    }}
+                    title="Nhấn để xem thông tin chi tiết và tiến độ học viên"
+                >
+                    <Avatar icon={<UserOutlined />} src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${text}`} className="group-hover:ring-2 ring-blue-500 transition-all shrink-0" />
                     <div>
-                        <div className="font-bold">{record.student?.fullName || text}</div>
+                        <div className="font-bold text-slate-800 group-hover:text-blue-600 transition-colors flex items-center gap-1.5">
+                            {record.student?.fullName || text}
+                            <InfoCircleOutlined className="text-xs text-blue-500 opacity-60 group-hover:opacity-100 transition-opacity" />
+                        </div>
                         {(record.student?.fullName || text) !== text && (
                             <div className="text-xs text-muted-foreground">{text}</div>
                         )}
                     </div>
-                </Space>
+                </div>
             )
         },
         {
@@ -421,6 +435,17 @@ const ClassDetail: React.FC = () => {
             key: 'action',
             render: (_: any, record: any) => (
                 <Space>
+                    <Button
+                        type="default"
+                        size="small"
+                        icon={<EyeOutlined />}
+                        onClick={() => {
+                            setViewingStudent(record.student);
+                            setStudentDetailOpen(true);
+                        }}
+                    >
+                        Hồ sơ
+                    </Button>
                     {!isAdminOrStaff && (
                         <Button
                             type="primary"
@@ -491,6 +516,14 @@ const ClassDetail: React.FC = () => {
                             </div>
                         </div>
                         <Space>
+                            <Button
+                                type="primary"
+                                icon={<CheckCircleOutlined />}
+                                onClick={() => setAttendanceDrawerVisible(true)}
+                                className="bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm font-medium"
+                            >
+                                Điểm danh buổi học
+                            </Button>
                             {isAdminOrStaff && (
                                 <>
                                     <Button
@@ -573,7 +606,13 @@ const ClassDetail: React.FC = () => {
                                 {
                                     key: 'attendance',
                                     label: <Space><CalendarOutlined /> Báo cáo điểm danh</Space>,
-                                    children: <AttendanceReportTab classId={id!} classData={classData} />
+                                    children: (
+                                        <AttendanceReportTab 
+                                            classId={id!} 
+                                            classData={classData} 
+                                            onOpenAttendance={() => setAttendanceDrawerVisible(true)}
+                                        />
+                                    )
                                 },
                                 {
                                     key: 'grading',
@@ -674,32 +713,47 @@ const ClassDetail: React.FC = () => {
             <Modal
                 title="Ghi danh học viên vào lớp"
                 open={isEnrollModalOpen}
-                onCancel={() => setIsEnrollModalOpen(false)}
+                onCancel={() => {
+                    setIsEnrollModalOpen(false);
+                    setSelectedStudentIds([]);
+                }}
                 onOk={handleEnroll}
                 confirmLoading={loading}
-                okText="Ghi danh"
+                okText={`Ghi danh ${selectedStudentIds.length > 0 ? `(${selectedStudentIds.length})` : ''}`}
                 cancelText="Hủy"
+                okButtonProps={{ disabled: selectedStudentIds.length === 0 }}
+                width={650}
             >
                 <div className="space-y-4 py-4">
-                    <Text>Tìm kiếm và chọn học viên để thêm vào lớp <strong>{classData.title}</strong>.</Text>
+                    <Text>Tìm kiếm và chọn một hoặc nhiều học viên để thêm vào lớp <strong>{classData.title}</strong>.</Text>
                     <Select
+                        mode="multiple"
                         showSearch
-                        placeholder="Nhập tên đăng nhập hoặc họ tên..."
+                        placeholder="Nhập tên đăng nhập hoặc họ tên để tìm kiếm..."
                         style={{ width: '100%' }}
                         defaultActiveFirstOption={false}
-                        suffixIcon={null}
+                        suffixIcon={<SearchOutlined />}
                         filterOption={false}
                         onSearch={searchStudents}
-                        onChange={setSelectedStudentId}
+                        onChange={setSelectedStudentIds}
+                        value={selectedStudentIds}
                         loading={searchLoading}
-                        notFoundContent={null}
+                        notFoundContent={searchLoading ? <Spin size="small" /> : 'Không tìm thấy học viên'}
                         size="large"
+                        maxTagCount="responsive"
                     >
-                        {availableStudents.map(s => (
-                            <Select.Option key={s.id} value={s.id}>
-                                {s.fullName && s.fullName !== s.username ? `${s.fullName} (@${s.username})` : s.username}
-                            </Select.Option>
-                        ))}
+                        {availableStudents.map(s => {
+                            const isAlreadyIn = classData.enrollments?.some(e => e.student?.id === s.id);
+                            return (
+                                <Select.Option key={s.id} value={s.id} disabled={isAlreadyIn}>
+                                    <Space>
+                                        <Avatar size="small" icon={<UserOutlined />} src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${s.username}`} />
+                                        <span>{s.fullName && s.fullName !== s.username ? `${s.fullName} (@${s.username})` : s.username}</span>
+                                        {isAlreadyIn && <Tag color="default" className="text-[10px]">Đã trong lớp</Tag>}
+                                    </Space>
+                                </Select.Option>
+                            );
+                        })}
                     </Select>
                 </div>
             </Modal>
@@ -918,6 +972,24 @@ const ClassDetail: React.FC = () => {
                     </div>
                 )}
             </Drawer>
+
+            <StudentDetailModal
+                open={studentDetailOpen}
+                onClose={() => setStudentDetailOpen(false)}
+                studentId={viewingStudent?.id}
+                initialStudent={viewingStudent}
+                classId={id}
+                className={classData?.title}
+            />
+
+            {classData && (
+                <QuickAttendanceDrawer
+                    open={attendanceDrawerVisible}
+                    onClose={() => setAttendanceDrawerVisible(false)}
+                    classData={classData}
+                    onSuccess={fetchClassData}
+                />
+            )}
         </DashboardLayout>
     );
 };

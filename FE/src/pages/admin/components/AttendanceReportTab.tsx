@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Tag, Spin, message, Typography, Button } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
+import { DownloadOutlined, InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import { apiFetch } from '@/lib/api';
+import { StudentDetailModal } from '@/components/student/StudentDetailModal';
 
 import dayjs from 'dayjs';
 
 const { Text } = Typography;
 
-export const AttendanceReportTab: React.FC<{ classId: string, classData: any }> = ({ classId, classData }) => {
+export const AttendanceReportTab: React.FC<{ classId: string, classData: any, onOpenAttendance?: () => void }> = ({ classId, classData, onOpenAttendance }) => {
   const [loading, setLoading] = useState(true);
   const [attendances, setAttendances] = useState<any[]>([]);
+  const [studentModalOpen, setStudentModalOpen] = useState(false);
+  const [viewingStudent, setViewingStudent] = useState<any>(null);
 
   useEffect(() => {
     const fetchAttendance = async () => {
@@ -34,14 +37,17 @@ export const AttendanceReportTab: React.FC<{ classId: string, classData: any }> 
   // Tính toán ngày cho các buổi học
   const calculateSessionDates = () => {
     if (!classData.startDate || !classData.schedule?.dayOfWeek) return [];
+    const daysOfWeek = classData.schedule.dayOfWeek;
+    if (!Array.isArray(daysOfWeek) || daysOfWeek.length === 0) return [];
     const dates: Date[] = [];
     const start = new Date(classData.startDate);
     const end = classData.endDate ? new Date(classData.endDate) : null;
-    const daysOfWeek = classData.schedule.dayOfWeek;
     const jsDays = daysOfWeek.map((d: number) => (d === 8 ? 0 : d - 1));
     
     let current = new Date(start);
-    while (dates.length < maxSessions) {
+    let safetyCounter = 0;
+    while (dates.length < maxSessions && safetyCounter < 1000) {
+      safetyCounter++;
       if (end && current > end) break;
       if (jsDays.includes(current.getDay())) {
         dates.push(new Date(current));
@@ -61,7 +67,19 @@ export const AttendanceReportTab: React.FC<{ classId: string, classData: any }> 
       key: 'student',
       fixed: 'left',
       width: 200,
-      render: (student: any) => <Text strong>{student?.fullName || student?.username}</Text>
+      render: (student: any) => (
+        <span 
+          className="cursor-pointer text-slate-800 hover:text-blue-600 font-semibold flex items-center gap-1.5 transition-colors select-none"
+          onClick={() => {
+            setViewingStudent(student);
+            setStudentModalOpen(true);
+          }}
+          title="Nhấn để xem thông tin chi tiết học viên"
+        >
+          {student?.fullName || student?.username}
+          <InfoCircleOutlined className="text-xs text-blue-400" />
+        </span>
+      )
     }
   ];
 
@@ -153,10 +171,25 @@ export const AttendanceReportTab: React.FC<{ classId: string, classData: any }> 
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end mb-4">
-        <Button type="primary" ghost icon={<DownloadOutlined />} onClick={handleExportAttendance}>
-          Xuất Báo cáo Điểm danh
-        </Button>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div className="text-xs sm:text-sm text-slate-500 font-medium">
+          Ma trận theo dõi chuyên cần toàn bộ học viên theo từng buổi học
+        </div>
+        <div className="flex items-center gap-2">
+          {onOpenAttendance && (
+            <Button 
+              type="primary" 
+              icon={<CheckCircleOutlined />} 
+              onClick={onOpenAttendance} 
+              className="bg-emerald-600 hover:bg-emerald-700 shadow-sm font-medium"
+            >
+              Điểm danh ngay
+            </Button>
+          )}
+          <Button type="primary" ghost icon={<DownloadOutlined />} onClick={handleExportAttendance}>
+            Xuất Báo cáo Excel
+          </Button>
+        </div>
       </div>
       <Table
         dataSource={dataSource}
@@ -165,6 +198,14 @@ export const AttendanceReportTab: React.FC<{ classId: string, classData: any }> 
         scroll={{ x: 'max-content' }}
         size="small"
         bordered
+      />
+      <StudentDetailModal
+        open={studentModalOpen}
+        onClose={() => setStudentModalOpen(false)}
+        studentId={viewingStudent?.id}
+        initialStudent={viewingStudent}
+        classId={classId}
+        className={classData?.title}
       />
     </div>
   );

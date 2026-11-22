@@ -176,4 +176,16 @@ export class UploadController {
       teacherId: req.user.id,
     });
   }
+
+  /** Lấy thông tin repository từ GitHub REST API */
+  @Get('github-info')
+  async getGithubInfo(@Query('url') url: string) {
+    return this.uploadService.getGithubInfo(url);
+  }
+
+  /** Trợ lý AI phân tích bài tập và gợi ý nhận xét cho giảng viên */
+  @Post('homework/submission/:id/ai-review')
+  async getAiReview(@Param('id') submissionId: string) {
+    return this.uploadService.getAiReview(submissionId);
+  }
 }

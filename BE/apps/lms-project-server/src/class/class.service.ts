@@ -400,6 +400,25 @@ export class ClassService {
         });
         const enrolledUserIds = new Set(existingEnrollments.map(e => e.studentId));
 
+        // Lấy thông tin lịch học của lớp hiện tại và các lớp khác để kiểm tra trùng lịch
+        const targetClass = await this.prisma.class.findUnique({
+            where: { id: classId },
+            include: { schedule: true }
+        });
+
+        const otherEnrollments = await this.prisma.enrollment.findMany({
+            where: {
+                studentId: { in: foundUserIds },
+                classId: { not: classId },
+                status: 'active',
+            },
+            include: {
+                class: {
+                    include: { schedule: true }
+                }
+            }
+        });
+
         const results = [];
 
         for (const id of identifiers) {
@@ -424,6 +443,45 @@ export class ClassService {
                     fullName: matchedUser.fullName,
                     status: 'invalid',
                     errMessage: 'Học viên đã tồn tại trong lớp'
+                });
+                continue;
+            }
+
+            // Kiểm tra trùng lịch học viên
+            let conflictMsg: string | null = null;
+            if (targetClass?.schedule?.shift && targetClass?.schedule?.dayOfWeek) {
+                const userEnrollments = otherEnrollments.filter(e => e.studentId === matchedUser.id);
+                for (const en of userEnrollments) {
+                    const otherClass = en.class;
+                    if (!otherClass || otherClass.status === 'cancelled' || otherClass.status === 'finished') continue;
+                    const otherSched = otherClass.schedule;
+                    if (!otherSched?.shift || !otherSched?.dayOfWeek) continue;
+
+                    if (otherSched.shift === targetClass.schedule.shift) {
+                        const hasCommonDay = otherSched.dayOfWeek.some((d: number) => targetClass.schedule!.dayOfWeek.includes(d));
+                        if (hasCommonDay) {
+                            const startA = new Date(targetClass.startDate || '1970-01-01');
+                            const endA = new Date(targetClass.endDate || '9999-12-31');
+                            const startB = new Date(otherClass.startDate || '1970-01-01');
+                            const endB = new Date(otherClass.endDate || '9999-12-31');
+                            if (startA <= endB && startB <= endA) {
+                                conflictMsg = `Trùng lịch học với lớp "${otherClass.title}" (Ca ${targetClass.schedule.shift})`;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (conflictMsg) {
+                results.push({
+                    identifier: id,
+                    id: matchedUser.id,
+                    username: matchedUser.username,
+                    email: matchedUser.email,
+                    fullName: matchedUser.fullName,
+                    status: 'invalid',
+                    errMessage: conflictMsg
                 });
                 continue;
             }

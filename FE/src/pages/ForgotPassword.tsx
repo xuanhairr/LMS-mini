@@ -30,8 +30,12 @@ const ForgotPassword = () => {
         message.success('Nếu tài khoản tồn tại, email chứa mã OTP đã được gửi.');
       }
     } catch (error: any) {
-      setIsVerifying(true);
-      message.success('Nếu tài khoản tồn tại, email chứa mã OTP đã được gửi.');
+      if (error?.statusCode === 429 || error?.message?.includes('quá nhiều lần') || error?.message?.includes('Throttler')) {
+        message.error('Bạn đã yêu cầu gửi mã OTP quá nhiều lần. Vui lòng thử lại sau 5 phút.');
+      } else {
+        setIsVerifying(true);
+        message.success('Nếu tài khoản tồn tại, email chứa mã OTP đã được gửi.');
+      }
     } finally {
       setLoading(false);
     }

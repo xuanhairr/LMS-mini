@@ -169,8 +169,11 @@ const StudentDashboard: React.FC = () => {
           lessons.forEach((lesson: any, idx: number) => {
             const sessionNo = idx + 1;
             
-            const p = progresses.find((pr: any) => (pr.lesson?.id || pr.lessonId) === lesson.id);
-            const isLessonCompleted = p && p.completed;
+            const matchingProgresses = progresses.filter((pr: any) => (pr.lesson?.id || pr.lessonId) === lesson.id);
+            const totalRequiredItems = (lesson.videos?.length || 0) + (lesson.quizzes?.length || 0);
+            const isLessonCompleted = matchingProgresses.some((p: any) => 
+              p.completed || (p.completedItems && p.completedItems.length > 0 && (totalRequiredItems === 0 || p.completedItems.length >= totalRequiredItems))
+            );
 
             if (!isLessonCompleted && !firstUncompleted) {
               firstUncompleted = {
