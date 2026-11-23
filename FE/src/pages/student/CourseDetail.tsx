@@ -860,7 +860,7 @@ const CourseDetail: React.FC = () => {
                                                                                                     <Button
                                                                                                         type="link"
                                                                                                         icon={<DownloadOutlined />}
-                                                                                                        href={att.fileUrl.startsWith('http') ? att.fileUrl : `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}${att.fileUrl}`}
+                                                                                                        href={att.fileUrl.startsWith('http') ? att.fileUrl : `${import.meta.env.VITE_API_URL || ''}${att.fileUrl}`}
                                                                                                         target="_blank"
                                                                                                         className="p-0"
                                                                                                     />

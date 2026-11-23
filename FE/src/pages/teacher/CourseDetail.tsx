@@ -182,7 +182,7 @@ const CourseDetail: React.FC = () => {
     try {
       const token = localStorage.getItem('lms_token');
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/upload/lesson/${lessonId}/attachments`,
+        `${import.meta.env.VITE_API_URL || ''}/api/upload/lesson/${lessonId}/attachments`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -212,7 +212,7 @@ const CourseDetail: React.FC = () => {
               uid: att.id,
               name: att.fileName,
               status: 'done' as const,
-              url: att.fileUrl.startsWith('http') ? att.fileUrl : `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}${att.fileUrl}`,
+              url: att.fileUrl.startsWith('http') ? att.fileUrl : `${import.meta.env.VITE_API_URL || ''}${att.fileUrl}`,
             })),
             ...uploading
           ];
@@ -715,7 +715,7 @@ const CourseDetail: React.FC = () => {
         const token = localStorage.getItem('lms_token');
         for (const item of pendingAttachments) {
           try {
-            await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/upload/lesson/${lessonId}/attachment`, {
+            await fetch(`${import.meta.env.VITE_API_URL || ''}/api/upload/lesson/${lessonId}/attachment`, {
               method: 'POST',
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -743,7 +743,7 @@ const CourseDetail: React.FC = () => {
         const token = localStorage.getItem('lms_token');
         for (const id of pendingDeletes) {
           try {
-            await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/upload/attachment/${id}`, {
+            await fetch(`${import.meta.env.VITE_API_URL || ''}/api/upload/attachment/${id}`, {
               method: 'DELETE',
               headers: { Authorization: `Bearer ${token}` },
             });
@@ -1006,7 +1006,7 @@ const CourseDetail: React.FC = () => {
                                     title: "Link",
                                     dataIndex: "fileUrl",
                                     key: "fileUrl",
-                                    render: (url) => <a href={url.startsWith('http') ? url : `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}${url}`} target="_blank" rel="noreferrer">Tải xuống / Xem</a>
+                                    render: (url) => <a href={url.startsWith('http') ? url : `${import.meta.env.VITE_API_URL || ''}${url}`} target="_blank" rel="noreferrer">Tải xuống / Xem</a>
                                   }
                                 ]}
                               />
@@ -1098,7 +1098,7 @@ const CourseDetail: React.FC = () => {
             const token = localStorage.getItem('lms_token');
             for (const item of pendingAttachments) {
               try {
-                await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/upload/cloudinary?publicId=${item.publicId}`, {
+                await fetch(`${import.meta.env.VITE_API_URL || ''}/api/upload/cloudinary?publicId=${item.publicId}`, {
                   method: 'DELETE',
                   headers: { Authorization: `Bearer ${token}` },
                 });

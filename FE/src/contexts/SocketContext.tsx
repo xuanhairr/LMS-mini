@@ -24,7 +24,7 @@ interface SocketContextType {
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
-const API_BASE = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_SERVER_URL || '';
 
 export const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { user } = useAuth();
