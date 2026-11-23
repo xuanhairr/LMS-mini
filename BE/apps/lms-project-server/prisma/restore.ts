@@ -29,7 +29,11 @@ async function main() {
 
   // Chèn lại theo thứ tự để đảm bảo relations
   if (data.users && data.users.length) {
-    await prisma.user.createMany({ data: data.users });
+    const cleanedUsers = data.users.map((u: any) => {
+      const { resetPasswordToken, resetPasswordExpires, ...rest } = u;
+      return rest;
+    });
+    await prisma.user.createMany({ data: cleanedUsers });
     console.log(`- Đã khôi phục ${data.users.length} Users`);
   }
 

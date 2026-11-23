@@ -18,8 +18,6 @@
       "isEmailVerified": false,
       "verificationCode": null,
       "verificationCodeExpiresAt": null,
-      "resetPasswordToken": null,
-      "resetPasswordExpires": null,
       "creatorId": null,
       "updaterId": "697ad84b2958cf4ec0e3051d"
     },
@@ -41,8 +39,6 @@
       "isEmailVerified": true,
       "verificationCode": null,
       "verificationCodeExpiresAt": null,
-      "resetPasswordToken": null,
-      "resetPasswordExpires": null,
       "creatorId": "697ad84b2958cf4ec0e3051d",
       "updaterId": "697ad84b2958cf4ec0e3051d"
     },
@@ -64,8 +60,6 @@
       "isEmailVerified": true,
       "verificationCode": null,
       "verificationCodeExpiresAt": null,
-      "resetPasswordToken": null,
-      "resetPasswordExpires": null,
       "creatorId": "697ad84b2958cf4ec0e3051d",
       "updaterId": "6a0ef60f4f5c1c6cf168b02e"
     },
@@ -87,8 +81,6 @@
       "isEmailVerified": true,
       "verificationCode": null,
       "verificationCodeExpiresAt": null,
-      "resetPasswordToken": null,
-      "resetPasswordExpires": null,
       "creatorId": "697ad84b2958cf4ec0e3051d",
       "updaterId": "6a0ef6524f5c1c6cf168b02f"
     },
@@ -110,8 +102,6 @@
       "isEmailVerified": true,
       "verificationCode": null,
       "verificationCodeExpiresAt": null,
-      "resetPasswordToken": null,
-      "resetPasswordExpires": null,
       "creatorId": "6a0ef6524f5c1c6cf168b02f",
       "updaterId": "6a1077814724c4c8c0c13a3c"
     },
@@ -133,8 +123,6 @@
       "isEmailVerified": true,
       "verificationCode": null,
       "verificationCodeExpiresAt": null,
-      "resetPasswordToken": null,
-      "resetPasswordExpires": null,
       "creatorId": null,
       "updaterId": null
     },
@@ -156,8 +144,6 @@
       "isEmailVerified": true,
       "verificationCode": null,
       "verificationCodeExpiresAt": null,
-      "resetPasswordToken": null,
-      "resetPasswordExpires": null,
       "creatorId": null,
       "updaterId": null
     },
@@ -179,8 +165,6 @@
       "isEmailVerified": true,
       "verificationCode": null,
       "verificationCodeExpiresAt": null,
-      "resetPasswordToken": null,
-      "resetPasswordExpires": null,
       "creatorId": null,
       "updaterId": null
     },
@@ -202,8 +186,6 @@
       "isEmailVerified": true,
       "verificationCode": null,
       "verificationCodeExpiresAt": null,
-      "resetPasswordToken": null,
-      "resetPasswordExpires": null,
       "creatorId": null,
       "updaterId": null
     }
